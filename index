@@ -1,0 +1,2689 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniTrade UEH - Nền tảng trao đổi & mua bán nội bộ sinh viên UEH</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6.5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ueh-teal: #005F6B;
+            --ueh-dark: #00424B;
+            --ueh-light: #E6F2F4;
+            --ueh-orange: #F26522;
+            --ueh-orange-hover: #D95314;
+            --ueh-orange-light: #FFF3EC;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F7F8;
+            color: #1E293B;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Banner UEH */
+        .ueh-top-banner {
+            background: linear-gradient(95deg, #003840 0%, #005F6B 50%, #007585 78%, #F26522 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .ueh-top-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
+            background-size: 16px 16px;
+            pointer-events: none;
+        }
+
+        /* Logo hộp chuẩn nhận diện UEH */
+        .ueh-brand-box {
+            background-color: var(--ueh-teal);
+            border: 2px solid rgba(255,255,255,0.85);
+            border-radius: 12px;
+            padding: 6px 12px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+        }
+        .ueh-brand-box .ueh-text {
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+        }
+        .ueh-brand-box .uni-text {
+            color: var(--ueh-orange);
+            font-weight: 800;
+            font-size: 0.52rem;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
+
+        /* Thanh điều hướng chính */
+        .ueh-navbar {
+            background-color: var(--ueh-dark);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .ueh-nav-btn {
+            color: rgba(255,255,255,0.88);
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 11px 15px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s ease;
+        }
+        .ueh-nav-btn:hover {
+            color: #fff;
+            background-color: rgba(255,255,255,0.08);
+        }
+        .ueh-nav-btn.active {
+            color: #fff;
+            background-color: rgba(255,255,255,0.16);
+            border-bottom-color: var(--ueh-orange);
+            font-weight: 700;
+        }
+
+        /* Màu nút & badge */
+        .btn-ueh-teal {
+            background-color: var(--ueh-teal);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+        }
+        .btn-ueh-teal:hover {
+            background-color: var(--ueh-dark);
+            color: #fff;
+        }
+        .btn-ueh-orange {
+            background-color: var(--ueh-orange);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+        }
+        .btn-ueh-orange:hover {
+            background-color: var(--ueh-orange-hover);
+            color: #fff;
+        }
+        .btn-outline-ueh {
+            border: 1.5px solid var(--ueh-teal);
+            color: var(--ueh-teal);
+            font-weight: 600;
+            background-color: #fff;
+        }
+        .btn-outline-ueh:hover {
+            background-color: var(--ueh-teal);
+            color: #fff;
+        }
+
+        /* Danh mục sản phẩm */
+        .category-item-card {
+            background: #fff;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 13px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .category-item-card:hover {
+            border-color: var(--ueh-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 95, 107, 0.08);
+        }
+        .category-item-card.active {
+            border-color: var(--ueh-teal);
+            background-color: var(--ueh-light);
+            box-shadow: 0 4px 12px rgba(0, 95, 107, 0.14);
+        }
+        .category-icon-box {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background-color: var(--ueh-light);
+            color: var(--ueh-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        /* Thẻ sản phẩm */
+        .product-card {
+            background: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.22s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.09);
+            border-color: var(--ueh-teal);
+        }
+        .product-img-wrap {
+            position: relative;
+            height: 185px;
+            background-color: #F8FAFC;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.04);
+        }
+
+        /* Upload hình ảnh ở trang Đăng tin */
+        .upload-dropzone {
+            border: 2px dashed #CBD5E1;
+            border-radius: 14px;
+            background-color: #F8FAFC;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 16px;
+        }
+        .upload-dropzone:hover, .upload-dropzone.dragover {
+            border-color: var(--ueh-teal);
+            background-color: var(--ueh-light);
+        }
+        .thumb-slot {
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            border: 1.5px dashed #CBD5E1;
+            background: #F8FAFC;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumb-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Khung quét mã vạch sách */
+        .barcode-scanner-box {
+            border: 2px dashed var(--ueh-orange);
+            border-radius: 14px;
+            background-color: var(--ueh-orange-light);
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .scanner-laser {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #EF4444, transparent);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scanLaser 1.2s infinite ease-in-out;
+        }
+        @keyframes scanLaser {
+            0% { top: 10%; }
+            50% { top: 90%; }
+            100% { top: 10%; }
+        }
+        
+        /* Hiệu ứng focus cho camera */
+        .camera-overlay-focus {
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65);
+            transition: all 0.3s ease;
+        }
+
+        /* Nút Google chuẩn */
+        .btn-google-auth {
+            background-color: #ffffff;
+            color: #3c4043;
+            border: 1.5px solid #dadce0;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+        .btn-google-auth:hover {
+            background-color: #f8f9fa;
+            border-color: #c6c9cc;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        /* Hiệu ứng Shipper trên bản đồ */
+        @keyframes pulseOrange {
+            0% { box-shadow: 0 0 0 0 rgba(242, 101, 34, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(242, 101, 34, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(242, 101, 34, 0); }
+        }
+        .shipper-badge-pulse {
+            animation: pulseOrange 2s infinite;
+        }
+
+        /* Ẩn thanh cuộn ngang trên mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER & THANH ĐIỀU HƯỚNG ==================== -->
+    <header class="sticky-top shadow-sm z-3">
+        <div class="ueh-top-banner py-2 px-3">
+            <div class="container-xl d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 position-relative z-1">
+                <div class="d-flex align-items-center gap-3" style="cursor:pointer" onclick="switchTab('home')">
+                    <div class="ueh-brand-box">
+                        <span class="ueh-text">UEH</span>
+                        <span class="uni-text">UNIVERSITY</span>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-bolder fs-4 text-white tracking-tight">UniTrade</span>
+                            <span class="badge rounded-pill" style="background-color: var(--ueh-orange); font-size: 0.68rem;">CHỢ ĐỒ CŨ UEH</span>
+                        </div>
+                        <div class="text-white-50" style="font-size: 0.74rem;">Sàn giao dịch đồ cũ sinh viên UEH</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="fw-bolder text-uppercase" style="font-size: 0.95rem; letter-spacing: 0.4px;">
+                        <span class="text-white">UniTrade UEH - </span>
+                        <span class="text-warning">NỀN TẢNG TRAO ĐỔI & MUA BÁN NỘI BỘ UEH</span>
+                    </div>
+                    <div class="d-none d-sm-flex justify-content-center gap-3 mt-1" style="font-size: 0.73rem; color: #E2F1F3;">
+                        <span><i class="fa-solid fa-graduation-cap text-warning me-1"></i>Xác thực @st.ueh.edu.vn</span>
+                        <span><i class="fa-solid fa-location-dot text-warning me-1"></i>Giao nhận Cơ sở A, B, N</span>
+                        <span><i class="fa-solid fa-repeat text-warning me-1"></i>Vừa là Người Mua - Vừa là Người Bán</span>
+                    </div>
+                </div>
+
+                <div class="d-none d-lg-flex align-items-center">
+                    <span id="topStatusBadge" class="badge bg-dark bg-opacity-50 border border-light border-opacity-25 px-3 py-2 fw-normal" style="font-size: 0.74rem;">
+                        <i class="fa-solid fa-lock text-warning me-1"></i>Chưa đăng nhập
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thanh Điều Hướng Chính -->
+        <nav class="ueh-navbar">
+            <div class="container-xl d-flex align-items-center justify-content-between px-2 px-sm-3">
+                <div class="d-flex align-items-center overflow-auto no-scrollbar pt-1 gap-1">
+                    <button id="nav-home" class="ueh-nav-btn active" onclick="switchTab('home')">
+                        <i class="fa-solid fa-house me-1"></i>Trang chủ
+                    </button>
+                    <button id="nav-sell" class="ueh-nav-btn" onclick="switchTab('sell')">
+                        <i class="fa-solid fa-circle-plus me-1" style="color: var(--ueh-orange);"></i>ĐĂNG TIN PASS ĐỒ
+                    </button>
+                    <button id="nav-cart" class="ueh-nav-btn" onclick="switchTab('cart')">
+                        <i class="fa-solid fa-cart-shopping me-1"></i>GIỎ HÀNG CỦA TÔI
+                        <span id="cartBadge" class="badge rounded-pill ms-1" style="background-color: var(--ueh-orange);">0</span>
+                    </button>
+                    <button id="nav-messages" class="ueh-nav-btn" onclick="switchTab('messages')">
+                        <i class="fa-solid fa-comment-dots me-1"></i>TIN NHẮN
+                        <span class="badge rounded-pill ms-1" style="background-color: var(--ueh-orange);">3</span>
+                    </button>
+                    <button id="nav-orders" class="ueh-nav-btn" onclick="switchTab('orders')">
+                        <i class="fa-solid fa-truck-fast me-1"></i>ĐƠN HÀNG
+                        <span id="orderBadge" class="badge rounded-pill bg-info text-dark ms-1">2</span>
+                    </button>
+                    <button id="nav-account" class="ueh-nav-btn" onclick="switchTab('account')">
+                        <i class="fa-solid fa-user-graduate me-1"></i>TÀI KHOẢN CỦA TÔI
+                    </button>
+                </div>
+
+                <div class="ps-2 py-1 flex-shrink-0">
+                    <div id="guestAuthArea" class="d-flex align-items-center gap-2">
+                        <button onclick="openAuthModal('login')" class="btn btn-sm btn-light fw-bold px-3 rounded-pill shadow-sm" style="color: var(--ueh-teal); font-size: 0.78rem;">
+                            <i class="fa-regular fa-user me-1"></i>ĐĂNG NHẬP
+                        </button>
+                        <button onclick="openAuthModal('register')" class="btn btn-sm btn-ueh-orange fw-bold px-3 rounded-pill shadow-sm" style="font-size: 0.78rem;">
+                            ĐĂNG KÝ
+                        </button>
+                    </div>
+
+                    <div id="userLoggedArea" class="d-none align-items-center gap-2">
+                        <div onclick="switchTab('account')" class="bg-white text-dark rounded-pill px-3 py-1 d-flex align-items-center gap-2 shadow-sm border" style="cursor:pointer;">
+                            <img id="headerUserAvatar" src="" alt="Avatar" class="rounded-circle" style="width: 28px; height: 28px; object-fit: cover; border: 2px solid var(--ueh-teal);">
+                            <div class="lh-1 text-start d-none d-sm-block">
+                                <div id="headerUserName" class="fw-bold" style="font-size: 0.76rem;">Sinh viên UEH</div>
+                                <small id="headerUserMethod" class="text-muted" style="font-size: 0.65rem;">@st.ueh.edu.vn</small>
+                            </div>
+                        </div>
+                        <button onclick="logoutUser()" class="btn btn-sm btn-outline-light rounded-pill px-2 py-1" title="Đăng xuất tài khoản" style="font-size: 0.75rem;">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ==================== NỘI DUNG CHÍNH ==================== -->
+    <main class="container-xl py-4 flex-grow-1">
+
+        <!-- ================================================================= -->
+        <!-- 1. TRANG CHỦ                                                      -->
+        <!-- ================================================================= -->
+        <section id="tab-home" class="tab-pane-section">
+            <div class="row justify-content-center mb-4">
+                <div class="col-12 col-lg-10">
+                    <div class="bg-white p-2 rounded-pill shadow-sm border d-flex align-items-center gap-2">
+                        <span class="ps-3 text-secondary"><i class="fa-solid fa-magnifying-glass fs-5"></i></span>
+                        <input id="searchInput" type="text" oninput="renderHomeProducts()" class="form-control border-0 shadow-none" placeholder="Tìm kiếm giáo trình UEH, tài liệu A4, áo thun đồng phục UEH, đồ dùng phòng trọ...">
+                        <select id="campusFilterSelect" onchange="renderHomeProducts()" class="form-select border-0 bg-light rounded-pill d-none d-md-block" style="max-width: 210px; font-size: 0.84rem; font-weight: 600;">
+                            <option value="all">Tất cả Cơ sở UEH</option>
+                            <option value="Cơ sở A">Cơ sở A (Quận 3)</option>
+                            <option value="Cơ sở B">Cơ sở B (Quận 10)</option>
+                            <option value="Cơ sở N">Cơ sở N (Nam TP)</option>
+                        </select>
+                        <button onclick="renderHomeProducts()" class="btn btn-ueh-teal rounded-pill px-4 py-2 flex-shrink-0">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="fw-bold mb-0 text-secondary text-uppercase" style="font-size: 0.78rem; letter-spacing: 0.5px;">
+                        <i class="fa-solid fa-layer-group me-1" style="color: var(--ueh-teal);"></i>Danh mục sản phẩm sinh viên
+                    </h6>
+                    <button id="resetCatBtn" onclick="filterByCategory('all')" class="btn btn-link btn-sm text-decoration-none p-0 d-none fw-bold" style="color: var(--ueh-orange);">
+                        <i class="fa-solid fa-rotate-left me-1"></i>Xem tất cả danh mục
+                    </button>
+                </div>
+
+                <div class="row g-2 g-md-3 row-cols-2 row-cols-sm-3 row-cols-lg-5">
+                    <div class="col">
+                        <div id="cat-Sách & Giáo trình" onclick="filterByCategory('Sách & Giáo trình')" class="category-item-card">
+                            <div class="category-icon-box"><i class="fa-solid fa-book-open"></i></div>
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">Giáo trình & Sách</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.74rem;">Sách vở các khoa UEH</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div id="cat-Tài liệu A4" onclick="filterByCategory('Tài liệu A4')" class="category-item-card">
+                            <div class="category-icon-box"><i class="fa-solid fa-file-lines"></i></div>
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">Tài liệu A4</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.74rem;">Đề cương, ghi chú</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div id="cat-Đồ dùng nhà bếp" onclick="filterByCategory('Đồ dùng nhà bếp')" class="category-item-card">
+                            <div class="category-icon-box"><i class="fa-solid fa-kitchen-set"></i></div>
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">Đồ dùng nhà bếp</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.74rem;">Bếp, nồi cơm, ấm đun</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div id="cat-Đồ dùng phòng ngủ" onclick="filterByCategory('Đồ dùng phòng ngủ')" class="category-item-card">
+                            <div class="category-icon-box"><i class="fa-solid fa-bed"></i></div>
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">Đồ dùng phòng ngủ</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.74rem;">Đèn học, bàn, chăn ga</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-sm-4 col-lg">
+                        <div id="cat-Quần áo & Phụ kiện" onclick="filterByCategory('Quần áo & Phụ kiện')" class="category-item-card">
+                            <div class="category-icon-box"><i class="fa-solid fa-shirt"></i></div>
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">Quần áo & Phụ kiện</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.74rem;">Áo UEH, balo, giày</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <h4 class="fw-bolder mb-0 text-dark">Đồ mới đăng</h4>
+                        <span class="badge rounded-pill px-3 py-1" style="background-color: var(--ueh-orange-light); color: var(--ueh-orange); border: 1px solid rgba(242,101,34,0.3);">
+                            <i class="fa-regular fa-clock me-1"></i>Mới đăng 1 - 2 ngày trước
+                        </span>
+                    </div>
+                    <span class="text-muted" style="font-size: 0.8rem;">
+                        Hiển thị trực tiếp hình ảnh, giá bán và họ tên sinh viên đăng bán
+                    </span>
+                </div>
+
+                <div id="homeProductsGrid" class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                    <!-- Được render tự động bằng JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- 2. ĐĂNG TIN PASS ĐỒ (MAX 5 ẢNH + BƯỚC 5 QUÉT MÃ VẠCH SÁCH)         -->
+        <!-- ================================================================= -->
+        <section id="tab-sell" class="tab-pane-section d-none">
+            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mx-auto" style="max-width: 980px;">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 pb-3 border-bottom">
+                    <div>
+                        <h4 class="fw-bolder mb-1">Đăng Tin Pass Đồ Mới</h4>
+                        <p class="text-muted mb-0" style="font-size: 0.85rem;">Tải hình chụp món đồ của bạn lên (tối đa 5 ảnh) và đăng bán cho cộng đồng sinh viên UEH</p>
+                    </div>
+                    <span class="badge px-3 py-2 rounded-pill" style="background-color: var(--ueh-light); color: var(--ueh-teal);">
+                        <i class="fa-solid fa-camera me-1"></i>Tối đa 5 ảnh / sản phẩm
+                    </span>
+                </div>
+
+                <!-- Thanh 5 bước -->
+                <div class="my-4 px-2 px-md-5">
+                    <div class="d-flex align-items-center justify-content-between position-relative">
+                        <div class="position-absolute start-0 end-0 top-50 translate-middle-y bg-secondary bg-opacity-25" style="height: 3px; z-index: 0;"></div>
+                        <div class="position-relative z-1 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width:34px;height:34px;background:var(--ueh-teal);">1</div>
+                        <div class="position-relative z-1 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width:34px;height:34px;background:var(--ueh-teal);">2</div>
+                        <div class="position-relative z-1 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width:34px;height:34px;background:var(--ueh-teal);">3</div>
+                        <div class="position-relative z-1 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width:34px;height:34px;background:var(--ueh-teal);">4</div>
+                        <div class="position-relative z-1 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width:34px;height:34px;background:var(--ueh-orange);">5</div>
+                    </div>
+                </div>
+
+                <form id="sellForm" onsubmit="handlePublishItem(event)">
+                    <div class="row g-4">
+                        <!-- BƯỚC 1: THÊM HÌNH ẢNH (TỐI ĐA 5 ẢNH) -->
+                        <div class="col-12 col-lg-5">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="fw-bold mb-0">Bước 1: Thêm hình ảnh sản phẩm *</h6>
+                                <span id="imageCountBadge" class="badge rounded-pill" style="background-color: var(--ueh-teal);">0/5 ảnh (Tối đa 5)</span>
+                            </div>
+
+                            <div id="uploadDropzone" class="upload-dropzone mb-2" onclick="triggerFileSelect()">
+                                <img id="mainUploadPreview" src="" alt="Preview" class="d-none position-absolute top-0 start-0 w-100 h-100" style="object-fit: contain; background: #fff; padding: 6px;">
+                                <div id="uploadPlaceholderContent">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white mb-2 shadow-sm" style="width: 48px; height: 48px; background-color: var(--ueh-teal);">
+                                        <i class="fa-solid fa-cloud-arrow-up fs-5"></i>
+                                    </div>
+                                    <div class="fw-bold text-dark" style="font-size: 0.92rem;">Bấm để tải ảnh từ máy lên (Tối đa 5 ảnh)</div>
+                                    <div class="text-muted mt-1" style="font-size: 0.76rem;">Hoặc kéo thả hình ảnh vào khung này (JPG, PNG, WEBP)</div>
+                                </div>
+                                <input id="realFileInput" type="file" accept="image/*" multiple class="d-none" onchange="handleRealImageUpload(event)">
+                            </div>
+
+                            <div class="p-2 rounded-3 mb-2" style="background-color: var(--ueh-orange-light); border: 1px solid rgba(242,101,34,0.35); color: var(--ueh-orange); font-size: 0.78rem; font-weight: 600;">
+                                <i class="fa-solid fa-circle-info me-1"></i>Đối với sản phẩm là Sách/Giáo trình, cần minh chứng cả bìa mặt trước và sau để đảm bảo mức độ minh bạch.
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-bold text-secondary" style="font-size: 0.75rem;">Ảnh đã chọn (<span id="slotCounterText">0</span>/5):</small>
+                                    <button id="clearAllImgsBtn" type="button" onclick="clearUploadedImage()" class="btn btn-link btn-sm text-danger text-decoration-none p-0 d-none" style="font-size: 0.74rem;">
+                                        <i class="fa-solid fa-trash-can me-1"></i>Xóa tất cả ảnh
+                                    </button>
+                                </div>
+                                <div id="uploadedFiveSlots" class="row g-2 row-cols-5">
+                                    <!-- Render 5 ô bằng JS -->
+                                </div>
+                            </div>
+
+                            <div class="small fw-semibold text-secondary mb-1 mt-2">Hoặc bấm chọn nhanh hình mẫu có sẵn (thêm vào 5 ô):</div>
+                            <div id="sampleThumbList" class="row g-2 row-cols-5">
+                                <!-- Render bằng JS -->
+                            </div>
+                        </div>
+
+                        <!-- BƯỚC 2, 3, 4 & BƯỚC 5 QUÉT MÃ VẠCH -->
+                        <div class="col-12 col-lg-7">
+                            <h6 class="fw-bold mb-2">Bước 2: Nhập thông tin sản phẩm & chọn danh mục *</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold mb-1">Tên sản phẩm cần pass *</label>
+                                    <input id="sellTitle" type="text" required class="form-control" placeholder="Ví dụ: Giáo trình Marketing Căn Bản / Áo thun Polo đồng phục UEH">
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold mb-1">Danh mục sản phẩm *</label>
+                                    <select id="sellCategory" class="form-select" required onchange="handleCategoryChange()">
+                                        <option value="Sách & Giáo trình" selected>Giáo trình & Sách</option>
+                                        <option value="Tài liệu A4">Tài liệu A4</option>
+                                        <option value="Đồ dùng nhà bếp">Đồ dùng nhà bếp</option>
+                                        <option value="Đồ dùng phòng ngủ">Đồ dùng phòng ngủ</option>
+                                        <option value="Quần áo & Phụ kiện">Quần áo & Phụ kiện</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold mb-1">Cơ sở UEH giao dịch *</label>
+                                    <select id="sellCampus" class="form-select" required>
+                                        <option value="Cơ sở B">Cơ sở B (279 Nguyễn Tri Phương, Q.10)</option>
+                                        <option value="Cơ sở A">Cơ sở A (59C Nguyễn Đình Chiểu, Q.3)</option>
+                                        <option value="Cơ sở N">Cơ sở N (Khu chức năng 15, Nam TP)</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold mb-1">Mô tả chi tiết món đồ *</label>
+                                    <textarea id="sellDesc" rows="2" required class="form-control" placeholder="Ghi rõ tình trạng món đồ, độ mới, phụ kiện hoặc tài liệu tặng kèm..."></textarea>
+                                </div>
+                            </div>
+
+                            <hr class="my-3">
+
+                            <!-- BƯỚC 3 & BƯỚC 4 -->
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-5">
+                                    <h6 class="fw-bold mb-2">Bước 3: Đặt giá bán *</h6>
+                                    <div class="input-group">
+                                        <span class="input-group-text fw-bold bg-light">₫</span>
+                                        <input id="sellPrice" type="number" min="0" step="1000" required class="form-control fw-bold" placeholder="VD: 65000">
+                                    </div>
+                                    <div class="form-text" style="font-size: 0.72rem;">Nhập 0 nếu muốn Tặng miễn phí (Góc 0đ)</div>
+                                </div>
+
+                                <div class="col-12 col-sm-7">
+                                    <h6 class="fw-bold mb-2">Bước 4: Chọn tình trạng sản phẩm *</h6>
+                                    <input type="hidden" id="sellCondition" value="Mới 100%">
+                                    <div class="row g-2 row-cols-2">
+                                        <div class="col">
+                                            <button type="button" onclick="selectConditionBtn('Mới 100%', this)" class="cond-option-btn btn btn-sm w-100 fw-bold py-2 border-2" style="background-color: var(--ueh-light); border-color: var(--ueh-teal); color: var(--ueh-teal);">
+                                                Mới 100%
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" onclick="selectConditionBtn('Như mới (95-99%)', this)" class="cond-option-btn btn btn-sm btn-outline-secondary w-100 fw-semibold py-2">
+                                                Như mới (95-99%)
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" onclick="selectConditionBtn('Đã qua sử dụng - Tốt', this)" class="cond-option-btn btn btn-sm btn-outline-secondary w-100 fw-semibold py-2">
+                                                Cũ nhưng còn tốt
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" onclick="selectConditionBtn('Đã qua sử dụng - Bình thường', this)" class="cond-option-btn btn btn-sm btn-outline-secondary w-100 fw-semibold py-2">
+                                                Đã qua sử dụng
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- =============================================================== -->
+                            <!-- BƯỚC 5 (BẮT BUỘC RIÊNG CHO GIÁO TRÌNH & SÁCH): QUÉT MÃ VẠCH     -->
+                            <!-- =============================================================== -->
+                            <div id="bookBarcodeStep" class="mt-3 pt-3 border-top">
+                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <h6 class="fw-bold mb-0">
+                                        <i class="fa-solid fa-barcode me-2" style="color: var(--ueh-teal);"></i>Bước 5: Quét mã vạch sản phẩm *
+                                    </h6>
+                                    <span class="badge bg-danger">Bắt buộc</span>
+                                </div>
+
+                                <p class="fw-bold mb-2" style="color: var(--ueh-orange); font-size: 0.85rem;">
+                                    <i class="fa-solid fa-triangle-exclamation me-1"></i>Vui lòng quét tại đây để chứng minh mức độ minh bạch của mặt hàng.
+                                </p>
+
+                                <div class="barcode-scanner-box text-center">
+                                    <div id="scannerLaserLine" class="scanner-laser d-none z-3"></div>
+
+                                    <!-- Khung video bật Camera -->
+                                    <div id="cameraContainer" class="d-none mb-3 position-relative rounded-3 overflow-hidden border shadow-sm mx-auto bg-dark" style="max-width: 400px; aspect-ratio: 4/3;">
+                                        <video id="barcodeVideo" class="w-100 h-100 object-fit-cover" autoplay playsinline></video>
+                                        <div class="position-absolute top-50 start-50 translate-middle border border-2 border-danger rounded-3 camera-overlay-focus" style="width: 70%; height: 40%;"></div>
+                                    </div>
+
+                                    <!-- Icon Placeholder mặc định -->
+                                    <div class="bg-white rounded-3 p-3 border mb-2 d-inline-block shadow-sm" id="barcodeStaticPlaceholder" style="min-width: 250px;">
+                                        <i class="fa-solid fa-barcode" style="font-size: 2.8rem; letter-spacing: 4px; color: #0F172A;"></i>
+                                        <div class="small text-muted font-monospace mt-1">ISBN / BARCODE UEH CHECKER</div>
+                                    </div>
+
+                                    <!-- Các nút điều khiển Quét & Tải ảnh -->
+                                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-2">
+                                        
+                                        <!-- Nút bật camera -->
+                                        <button type="button" id="startCameraBtn" onclick="startBarcodeCamera()" class="btn btn-ueh-teal px-4 py-2 rounded-pill fw-bold shadow-sm mb-0">
+                                            <i class="fa-solid fa-camera me-2"></i>Mở camera quét mã
+                                        </button>
+                                        
+                                        <!-- Nút chụp hình từ camera (Ẩn mặc định) -->
+                                        <button type="button" id="captureCameraBtn" onclick="captureBarcode()" class="btn btn-success px-4 py-2 rounded-pill fw-bold shadow-sm mb-0 d-none">
+                                            <i class="fa-solid fa-crosshairs me-2"></i>Chụp quét mã vạch
+                                        </button>
+
+                                        <!-- Nút tắt camera (Ẩn mặc định) -->
+                                        <button type="button" id="stopCameraBtn" onclick="stopBarcodeCamera()" class="btn btn-secondary px-3 py-2 rounded-pill fw-bold shadow-sm mb-0 d-none">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+
+                                        <!-- Nút tải ảnh có sẵn từ thiết bị -->
+                                        <label id="uploadBarcodeLabel" class="btn btn-outline-ueh px-4 py-2 rounded-pill fw-bold shadow-sm mb-0" style="cursor:pointer;">
+                                            <i class="fa-solid fa-image me-2"></i>Tải ảnh mã vạch
+                                            <input type="file" accept="image/*" class="d-none" onchange="handleBarcodeImageUpload(event)">
+                                        </label>
+                                    </div>
+
+                                    <!-- Canvas ẩn để chứa hình từ video -->
+                                    <canvas id="barcodeCanvas" class="d-none"></canvas>
+
+                                    <!-- Kết quả quét mã vạch -->
+                                    <div id="barcodeScanResultBox" class="mt-3 d-none">
+                                        <!-- Được cập nhật động bằng JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HOÀN TẤT & ĐĂNG TIN -->
+                    <div class="mt-4 pt-3 border-top text-center">
+                        <h6 class="fw-bold mb-2">Hoàn tất & Đăng tin lên kệ</h6>
+                        <button type="submit" class="btn btn-ueh-teal btn-lg px-5 py-2 rounded-pill shadow fw-bold">
+                            <i class="fa-solid fa-circle-check me-2" style="color: var(--ueh-orange);"></i>ĐĂNG TIN NGAY
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- 3. GIỎ HÀNG CỦA TÔI                                               -->
+        <!-- ================================================================= -->
+        <section id="tab-cart" class="tab-pane-section d-none">
+            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mx-auto" style="max-width: 980px;">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <div>
+                        <h4 class="fw-bolder mb-0">Giỏ hàng của tôi</h4>
+                        <small class="text-muted">Các sản phẩm bạn đã cân nhắc và thêm vào giỏ hàng để chuẩn bị đặt mua</small>
+                    </div>
+                </div>
+
+                <div class="table-responsive border rounded-3 mb-4">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr style="font-size: 0.84rem;">
+                                <th class="ps-3">Sản phẩm</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Đơn giá (VNĐ)</th>
+                                <th class="text-end">Thành tiền (VNĐ)</th>
+                                <th class="text-center pe-3">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartTableBody" style="font-size: 0.88rem;">
+                            <!-- Render bằng JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row g-3 align-items-start">
+                    <div class="col-12 col-md-7">
+                        <div class="p-3 rounded-3 border" style="background-color: var(--ueh-light);">
+                            <label class="form-label fw-bold small mb-1" style="color: var(--ueh-teal);">
+                                <i class="fa-solid fa-location-dot me-1" style="color: var(--ueh-orange);"></i>Địa điểm nhận hàng mặc định tại UEH:
+                            </label>
+                            <select id="cartCampusSelect" onchange="changeDefaultCampus(this.value)" class="form-select form-select-sm fw-semibold">
+                                <option value="A">Cơ sở A UEH: 59C Nguyễn Đình Chiểu, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh.</option>
+                                <option value="B" selected>Cơ sở B UEH: 279 Nguyễn Tri Phương, Phường 5, Quận 10, TP. Hồ Chí Minh.</option>
+                                <option value="N">Cơ sở N UEH: Khu chức năng số 15, Đô thị mới Nam TP, Xã Bình Hưng, Huyện Bình Chánh, TP. Hồ Chí Minh.</option>
+                            </select>
+                            <div class="mt-2 text-muted" style="font-size: 0.75rem;">
+                                <i class="fa-solid fa-shield-halved me-1" style="color: var(--ueh-teal);"></i>Miễn phí vận chuyển nội bộ giữa các cơ sở UEH cho sinh viên.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-5">
+                        <div class="bg-light p-3 rounded-3 border">
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span class="text-muted">Tạm tính:</span>
+                                <strong id="cartSubtotalText">0đ</strong>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span class="text-muted">Phí vận chuyển:</span>
+                                <span class="fw-bold" style="color: var(--ueh-teal);">Nội bộ UEH - Miễn phí</span>
+                            </div>
+                            <hr class="my-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bolder">Tổng cộng (VNĐ):</span>
+                                <span id="cartTotalText" class="fw-bolder fs-5" style="color: var(--ueh-orange);">0đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                    <button onclick="checkoutCartItems()" class="btn btn-ueh-teal px-4 py-2 rounded-3 fw-bold">
+                        TIẾN HÀNH ĐẶT MUA HÀNG
+                    </button>
+                    <button onclick="switchTab('home')" class="btn btn-outline-secondary px-4 py-2 rounded-3 fw-bold">
+                        TIẾP TỤC MUA SẮM
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- 4. TIN NHẮN                                                       -->
+        <!-- ================================================================= -->
+        <section id="tab-messages" class="tab-pane-section d-none">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mx-auto" style="max-width: 980px;">
+                <div class="row g-0" style="min-height: 520px;">
+                    <div class="col-12 col-md-4 border-end bg-white">
+                        <div class="p-3 border-bottom bg-light">
+                            <h6 class="fw-bolder mb-0">Danh sách trò chuyện</h6>
+                            <small class="text-muted" style="font-size: 0.75rem;">Nhắn tin riêng giữa người mua & người bán</small>
+                        </div>
+                        <div id="conversationListBox" class="list-group list-group-flush">
+                            <!-- Render bằng JS -->
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-8 d-flex flex-column justify-content-between bg-light bg-opacity-50">
+                        <div class="p-3 bg-white border-bottom d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                <img id="chatHeaderAvatar" src="" class="rounded-circle border" style="width: 40px; height: 40px; object-fit: cover;" alt="Seller">
+                                <div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <strong id="chatHeaderName" style="font-size: 0.9rem;">Trần Minh Khang</strong>
+                                        <span class="badge rounded-pill" style="background-color: var(--ueh-light); color: var(--ueh-teal); font-size: 0.65rem;">Sinh viên UEH</span>
+                                    </div>
+                                    <div id="chatHeaderItem" class="text-muted" style="font-size: 0.75rem;">Đang trao đổi: Áo thun Polo đồng phục UEH</div>
+                                </div>
+                            </div>
+                            <button onclick="sendQuickMessage('Mình hẹn giao dịch trực tiếp tại sảnh Cơ sở B UEH (279 Nguyễn Tri Phương) nhé!')" class="btn btn-sm rounded-pill fw-bold" style="background-color: var(--ueh-orange-light); color: var(--ueh-orange); font-size: 0.75rem;">
+                                <i class="fa-solid fa-handshake me-1"></i>Hẹn gặp tại Cơ sở UEH
+                            </button>
+                        </div>
+
+                        <div id="chatMessagesBox" class="p-3 overflow-auto" style="height: 350px;">
+                            <!-- Render bằng JS -->
+                        </div>
+
+                        <div class="p-3 bg-white border-top">
+                            <div class="d-flex gap-2 overflow-auto no-scrollbar mb-2 pb-1">
+                                <button type="button" onclick="sendQuickMessage('Món này còn không bạn ơi?')" class="btn btn-sm btn-light border rounded-pill text-nowrap" style="font-size: 0.74rem;">Món này còn không bạn ơi?</button>
+                                <button type="button" onclick="sendQuickMessage('Bạn tiện giao ở Cơ sở A, B hay N vậy?')" class="btn btn-sm btn-light border rounded-pill text-nowrap" style="font-size: 0.74rem;">Bạn tiện giao ở Cơ sở A, B hay N vậy?</button>
+                                <button type="button" onclick="sendQuickMessage('Để lại cho mình giá sinh viên nhé!')" class="btn btn-sm btn-light border rounded-pill text-nowrap" style="font-size: 0.74rem;">Để lại cho mình giá sinh viên nhé!</button>
+                            </div>
+                            <form onsubmit="handleSendChat(event)" class="d-flex gap-2">
+                                <input id="chatTextInput" type="text" class="form-control" placeholder="Nhập tin nhắn trao đổi với người bán / người mua...">
+                                <button type="submit" class="btn btn-ueh-teal px-4 fw-bold">Gửi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- 5. ĐƠN HÀNG (TÍCH HỢP GOOGLE MAPS & 3 CƠ SỞ MẶC ĐỊNH UEH)        -->
+        <!-- ================================================================= -->
+        <section id="tab-orders" class="tab-pane-section d-none">
+            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mx-auto" style="max-width: 1080px;">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <div>
+                        <h4 class="fw-bolder mb-0">Theo dõi Đơn hàng</h4>
+                        <small class="text-muted">Cập nhật trạng thái đặt mua hàng & định vị Google Maps giao đến 3 Cơ sở UEH</small>
+                    </div>
+                </div>
+
+                <div class="row g-2 row-cols-2 row-cols-md-4 mb-4">
+                    <div class="col">
+                        <button id="order-tab-pending" onclick="switchOrderTab('pending')" class="btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <span>Chờ xác nhận</span>
+                            <span class="badge bg-secondary rounded-pill">1</span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button id="order-tab-shipping" onclick="switchOrderTab('shipping')" class="btn btn-ueh-teal w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Chờ giao hàng (GG Map)</span>
+                            <span id="shippingCountBadge" class="badge bg-warning text-dark rounded-pill">2</span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button id="order-tab-completed" onclick="switchOrderTab('completed')" class="btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                            <i class="fa-solid fa-box-check"></i>
+                            <span>Đã mua</span>
+                            <span class="badge bg-secondary rounded-pill">4</span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button id="order-tab-review" onclick="switchOrderTab('review')" class="btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                            <i class="fa-solid fa-star text-warning"></i>
+                            <span>Đánh giá</span>
+                            <span class="badge bg-secondary rounded-pill">2</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="order-panel-shipping" class="order-panel">
+                    <div class="p-3 rounded-3 border mb-3" style="background-color: var(--ueh-light);">
+                        <div class="fw-bold small mb-2" style="color: var(--ueh-teal);">
+                            <i class="fa-solid fa-building-columns me-1" style="color: var(--ueh-orange);"></i>
+                            CHỌN ĐỊA ĐIỂM GIAO HÀNG MẶC ĐỊNH TẠI CƠ SỞ UEH (Bấm để xem vị trí trên Google Maps):
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-12 col-md-4">
+                                <div id="campus-card-A" onclick="selectOrderCampusMap('A')" class="p-2 rounded-3 bg-white border h-100" style="cursor:pointer;">
+                                    <div class="fw-bold small" style="color: var(--ueh-teal);">Cơ sở A UEH</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">59C Nguyễn Đình Chiểu, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh.</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div id="campus-card-B" onclick="selectOrderCampusMap('B')" class="p-2 rounded-3 bg-white border border-2 h-100 shadow-sm" style="cursor:pointer; border-color: var(--ueh-teal) !important;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold small" style="color: var(--ueh-teal);">Cơ sở B UEH</span>
+                                        <span class="badge" style="background-color: var(--ueh-orange); font-size: 0.65rem;">Đang chọn</span>
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">279 Nguyễn Tri Phương, Phường 5, Quận 10, TP. Hồ Chí Minh.</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div id="campus-card-N" onclick="selectOrderCampusMap('N')" class="p-2 rounded-3 bg-white border h-100" style="cursor:pointer;">
+                                    <div class="fw-bold small" style="color: var(--ueh-teal);">Cơ sở N UEH</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Khu chức năng số 15, Đô thị mới Nam TP, Xã Bình Hưng, Huyện Bình Chánh, TP. Hồ Chí Minh.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-7">
+                            <div class="position-relative rounded-3 overflow-hidden border shadow-sm" style="height: 410px; background: #e9ecef;">
+                                <iframe id="orderGoogleMapFrame" class="w-100 h-100 border-0" loading="lazy" allowfullscreen
+                                    src="https://maps.google.com/maps?q=279%20Nguyen%20Tri%20Phuong,%20Phuong%205,%20Quan%2010,%20Ho%20Chi%20Minh&t=&z=16&ie=UTF8&iwloc=&output=embed">
+                                </iframe>
+                                <div class="position-absolute bottom-0 start-0 end-0 m-3 p-2 bg-white bg-opacity-95 rounded-3 shadow border d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0 shipper-badge-pulse" style="width: 40px; height: 40px; background-color: var(--ueh-orange);">
+                                        <i class="fa-solid fa-motorcycle"></i>
+                                    </div>
+                                    <div style="font-size: 0.78rem;">
+                                        <div class="fw-bold" style="color: var(--ueh-teal);">Người giao hàng đang di chuyển đến điểm hẹn UEH</div>
+                                        <div id="mapActiveAddressLabel" class="text-muted">Cơ sở B UEH: 279 Nguyễn Tri Phương, Phường 5, Quận 10, TP. Hồ Chí Minh.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-5">
+                            <div id="shippingOrdersContainer" class="d-flex flex-column gap-3" style="max-height: 410px; overflow-y: auto;">
+                                <!-- Render bằng JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="order-panel-pending" class="order-panel d-none">
+                    <div class="p-3 rounded-3 border bg-light d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img id="pendingOrderSampleImg" src="" class="rounded-3 border" style="width: 64px; height: 64px; object-fit: cover;" alt="Book">
+                            <div>
+                                <span class="badge bg-warning text-dark mb-1">Chờ người bán xác nhận lịch hẹn</span>
+                                <h6 class="fw-bold mb-0">Giáo trình Marketing Căn Bản UEH</h6>
+                                <small class="text-muted">Người bán: Nguyễn Khánh Huyền • Nhận tại: Cơ sở B UEH</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bolder fs-6" style="color: var(--ueh-orange);">65.000đ</div>
+                            <button onclick="switchTab('messages')" class="btn btn-sm btn-ueh-teal mt-1">Nhắn tin người bán</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="order-panel-completed" class="order-panel d-none">
+                    <div class="p-3 rounded-3 border bg-light d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img id="completedOrderSampleImg" src="" class="rounded-3 border" style="width: 64px; height: 64px; object-fit: cover;" alt="Book">
+                            <div>
+                                <span class="badge bg-success mb-1">Đã giao dịch thành công</span>
+                                <h6 class="fw-bold mb-0">Giáo trình Lý Thuyết Tài Chính Tiền Tệ UEH</h6>
+                                <small class="text-muted">Người bán: Lê Quế Trâm • Đã nhận tại: Cơ sở A UEH (59C Nguyễn Đình Chiểu, Q.3)</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bolder fs-6">55.000đ</div>
+                            <button onclick="switchOrderTab('review')" class="btn btn-sm btn-ueh-orange mt-1">Đánh giá người bán</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="order-panel-review" class="order-panel d-none">
+                    <div class="p-4 rounded-3 border bg-light mx-auto" style="max-width: 620px;">
+                        <h6 class="fw-bold mb-1">Đánh giá độ uy tín sinh viên sau khi mua hàng</h6>
+                        <p class="text-muted small mb-2">Sản phẩm: <strong>Giáo trình Lý Thuyết Tài Chính Tiền Tệ UEH</strong> - Người bán: <strong>Lê Quế Trâm</strong></p>
+                        <div class="text-warning fs-4 mb-2">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-dark small fw-bold ms-2">5/5 Sao (Rất uy tín, đúng mô tả)</span>
+                        </div>
+                        <textarea class="form-control mb-3" rows="2" placeholder="Nhập nhận xét của bạn về món đồ và thái độ của bạn sinh viên bán hàng..."></textarea>
+                        <button onclick="showToast('Đã gửi đánh giá 5 sao thành công!')" class="btn btn-ueh-teal btn-sm px-4 fw-bold">Gửi đánh giá</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- 6. TÀI KHOẢN CỦA TÔI                                              -->
+        <!-- ================================================================= -->
+        <section id="tab-account" class="tab-pane-section d-none">
+            <div class="row g-4">
+                <div class="col-12 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm rounded-4 p-3">
+                        <div class="d-flex align-items-center gap-3 pb-3 mb-3 border-bottom">
+                            <img id="accProfileAvatar" src="" class="rounded-circle border border-2" style="width: 56px; height: 56px; object-fit: cover; border-color: var(--ueh-teal) !important;" alt="Avatar">
+                            <div class="overflow-hidden">
+                                <h6 id="accProfileName" class="fw-bolder mb-0 text-truncate">Sinh viên UEH</h6>
+                                <small id="accProfileEmail" class="text-muted d-block text-truncate" style="font-size: 0.73rem;">@st.ueh.edu.vn</small>
+                                <span class="badge mt-1" style="background-color: var(--ueh-light); color: var(--ueh-teal); font-size: 0.66rem;">
+                                    <i class="fa-solid fa-circle-check me-1"></i>Đã xác thực tài khoản
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-1">
+                            <button id="acc-nav-profile" onclick="switchAccountPanel('profile')" class="btn btn-ueh-teal text-start fw-bold py-2 px-3 rounded-3">
+                                <i class="fa-solid fa-id-card me-2"></i>Hồ sơ sinh viên
+                            </button>
+                            <button id="acc-nav-selling" onclick="switchAccountPanel('selling')" class="btn btn-light text-start fw-semibold py-2 px-3 rounded-3 d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-tags me-2" style="color: var(--ueh-teal);"></i>Hàng đang chờ bán</span>
+                                <span id="accSellingBadge" class="badge rounded-pill" style="background-color: var(--ueh-orange);">2</span>
+                            </button>
+                            <button id="acc-nav-sold" onclick="switchAccountPanel('sold')" class="btn btn-light text-start fw-semibold py-2 px-3 rounded-3 d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-box-check me-2 text-success"></i>Hàng đã bán</span>
+                                <span id="accSoldBadge" class="badge rounded-pill bg-secondary">2</span>
+                            </button>
+                            <button id="acc-nav-history" onclick="switchAccountPanel('history')" class="btn btn-light text-start fw-semibold py-2 px-3 rounded-3">
+                                <i class="fa-solid fa-clock-rotate-left me-2" style="color: var(--ueh-orange);"></i>Lịch sử mua bán
+                            </button>
+                            <button id="acc-nav-settings" onclick="switchAccountPanel('settings')" class="btn btn-light text-start fw-semibold py-2 px-3 rounded-3">
+                                <i class="fa-solid fa-gear me-2 text-secondary"></i>Cài đặt tài khoản
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-8 col-lg-9">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+                        <div id="acc-panel-profile" class="acc-panel">
+                            <h5 class="fw-bolder mb-1">Hồ sơ sinh viên</h5>
+                            <p class="text-muted small mb-3">Thông tin cá nhân của chủ tài khoản (Họ tên, ngày tháng năm sinh, giới tính, email, số điện thoại)</p>
+                            <form onsubmit="saveProfileInfo(event)" class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Họ và tên sinh viên</label>
+                                    <input id="inputProfName" type="text" required class="form-control" value="Nguyễn Khánh Huyền">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Ngày tháng năm sinh</label>
+                                    <input id="inputProfDob" type="date" required class="form-control" value="2005-09-15">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Giới tính</label>
+                                    <select id="inputProfGender" class="form-select">
+                                        <option value="Nữ" selected>Nữ</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Email liên kết</label>
+                                    <input id="inputProfEmail" type="email" readonly class="form-control bg-light" value="huyennguyen@st.ueh.edu.vn">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Số điện thoại liên hệ</label>
+                                    <input id="inputProfPhone" type="tel" required class="form-control" value="0908 279 593">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-bold">Cơ sở học tập chính</label>
+                                    <select id="inputProfCampus" class="form-select">
+                                        <option value="B">Cơ sở B: 279 Nguyễn Tri Phương, Quận 10</option>
+                                        <option value="A">Cơ sở A: 59C Nguyễn Đình Chiểu, Quận 3</option>
+                                        <option value="N">Cơ sở N: Khu chức năng số 15, Nam TP</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 pt-2">
+                                    <button type="submit" class="btn btn-ueh-teal px-4 fw-bold">Lưu thông tin hồ sơ</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="acc-panel-selling" class="acc-panel d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h5 class="fw-bolder mb-0">Hàng đang chờ bán</h5>
+                                    <small class="text-muted">Các sản phẩm bạn đã đăng bán lên sàn UniTrade UEH</small>
+                                </div>
+                                <button onclick="switchTab('sell')" class="btn btn-sm btn-ueh-orange fw-bold">+ Đăng bán món mới</button>
+                            </div>
+                            <div id="mySellingContainer" class="d-flex flex-column gap-2"></div>
+                        </div>
+
+                        <div id="acc-panel-sold" class="acc-panel d-none">
+                            <h5 class="fw-bolder mb-1">Hàng đã bán</h5>
+                            <p class="text-muted small mb-3">Các món đồ cũ bạn đã pass thành công cho sinh viên khác</p>
+                            <div id="mySoldContainer" class="d-flex flex-column gap-2"></div>
+                        </div>
+
+                        <div id="acc-panel-history" class="acc-panel d-none">
+                            <h5 class="fw-bolder mb-3">Lịch sử mua bán</h5>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 rounded-3 border bg-light">
+                                        <h6 class="fw-bold" style="color: var(--ueh-teal);"><i class="fa-solid fa-cart-arrow-down me-2"></i>+ Lịch sử mua</h6>
+                                        <hr class="my-2">
+                                        <div class="small d-flex justify-content-between py-1 border-bottom">
+                                            <span>Giáo trình Lý Thuyết Tài Chính Tiền Tệ</span>
+                                            <strong>55.000đ</strong>
+                                        </div>
+                                        <div class="small d-flex justify-content-between py-1 pt-2">
+                                            <span>Áo thun Polo đồng phục UEH</span>
+                                            <strong>95.000đ</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 rounded-3 border" style="background-color: var(--ueh-orange-light);">
+                                        <h6 class="fw-bold" style="color: var(--ueh-orange);"><i class="fa-solid fa-coins me-2"></i>+ Lịch sử bán</h6>
+                                        <hr class="my-2">
+                                        <div class="small d-flex justify-content-between py-1 border-bottom">
+                                            <span>Giáo trình Kinh tế Vi mô UEH</span>
+                                            <strong class="text-success">+75.000đ</strong>
+                                        </div>
+                                        <div class="small d-flex justify-content-between py-1 pt-2">
+                                            <span>Máy tính bỏ túi Casio fx-580VN X</span>
+                                            <strong class="text-success">+320.000đ</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="acc-panel-settings" class="acc-panel d-none">
+                            <h5 class="fw-bolder mb-3">Cài đặt tài khoản</h5>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="notifSwitch1" checked>
+                                <label class="form-check-label fw-semibold small" for="notifSwitch1">Nhận thông báo khi có sinh viên nhắn tin hỏi mua đồ</label>
+                            </div>
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input" type="checkbox" id="notifSwitch2" checked>
+                                <label class="form-check-label fw-semibold small" for="notifSwitch2">Hiển thị huy hiệu Sinh viên UEH đã xác thực trên bài đăng</label>
+                            </div>
+                            <button onclick="logoutUser()" class="btn btn-outline-danger btn-sm fw-bold px-3">
+                                <i class="fa-solid fa-right-from-bracket me-1"></i>Đăng xuất khỏi tài khoản
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== MODAL CHI TIẾT SẢN PHẨM ==================== -->
+    <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 overflow-hidden shadow-lg">
+                <div class="row g-0">
+                    <div class="col-12 col-md-6 bg-light d-flex align-items-center justify-content-center p-3 position-relative">
+                        <img id="detailModalImg" src="" class="img-fluid rounded-3" style="max-height: 340px; object-fit: contain;" alt="Product">
+                        <span id="detailModalTime" class="badge bg-dark bg-opacity-75 position-absolute top-0 start-0 m-3">1 ngày trước</span>
+                    </div>
+                    <div class="col-12 col-md-6 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span id="detailModalCategory" class="badge rounded-pill" style="background-color: var(--ueh-light); color: var(--ueh-teal);">Danh mục</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <h5 id="detailModalTitle" class="fw-bolder text-dark mb-1">Tên sản phẩm</h5>
+                            <div id="detailModalPrice" class="fs-4 fw-bolder mb-3" style="color: var(--ueh-orange);">0đ</div>
+                            <p id="detailModalDesc" class="text-muted small mb-3"></p>
+                            <div class="p-3 rounded-3 bg-light border small space-y-1 mb-3">
+                                <div class="mb-1"><i class="fa-solid fa-user-graduate me-2" style="color: var(--ueh-teal);"></i>Người bán: <strong id="detailModalSeller"></strong></div>
+                                <div class="mb-1"><i class="fa-solid fa-location-dot me-2" style="color: var(--ueh-orange);"></i>Cơ sở giao dịch: <strong id="detailModalCampus"></strong></div>
+                                <div><i class="fa-solid fa-star text-warning me-2"></i>Tình trạng: <strong id="detailModalCond">Như mới</strong></div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button id="detailAddToCartBtn" class="btn btn-ueh-teal py-2 fw-bold rounded-3">
+                                <i class="fa-solid fa-cart-plus me-2"></i>Thêm vào Giỏ hàng của tôi
+                            </button>
+                            <button onclick="chatWithSellerFromModal()" class="btn btn-outline-ueh py-2 fw-bold rounded-3">
+                                <i class="fa-regular fa-comments me-2"></i>Nhắn tin thương lượng với người bán
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL ĐĂNG NHẬP / ĐĂNG KÝ CHÍNH THỨC ==================== -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg p-3 p-sm-4">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="text-center mb-3">
+                    <div class="ueh-brand-box mb-2">
+                        <span class="ueh-text">UEH</span>
+                        <span class="uni-text">UNIVERSITY</span>
+                    </div>
+                    <h5 id="authModalTitle" class="fw-bolder mb-1" style="color: var(--ueh-teal);">Đăng nhập vào UniTrade UEH</h5>
+                    <p class="text-muted small mb-0">Vui lòng đăng nhập tài khoản để mua bán, thêm giỏ hàng và đăng tin pass đồ</p>
+                </div>
+
+                <ul class="nav nav-pills nav-fill bg-light p-1 rounded-pill mb-3">
+                    <li class="nav-item">
+                        <button type="button" id="tabBtnLogin" onclick="switchAuthMode('login')" class="nav-link active rounded-pill fw-bold py-2" style="font-size: 0.85rem;">
+                            ĐĂNG NHẬP
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" id="tabBtnRegister" onclick="switchAuthMode('register')" class="nav-link rounded-pill fw-bold py-2 text-secondary" style="font-size: 0.85rem;">
+                            ĐĂNG KÝ TÀI KHOẢN
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="p-3 rounded-4 border bg-light bg-opacity-50 mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge rounded-pill" style="background-color: var(--ueh-teal);">Cách 1</span>
+                        <span class="fw-bold small text-dark">Tài khoản Email Sinh viên UEH (<code>@st.ueh.edu.vn</code>)</span>
+                    </div>
+
+                    <form id="uehEmailAuthForm" onsubmit="handleUEHEmailAuth(event)" novalidate>
+                        <div id="regFullNameGroup" class="mb-2 d-none">
+                            <label class="form-label small fw-bold mb-1">Họ và tên sinh viên *</label>
+                            <input id="authFullNameInput" type="text" class="form-control" placeholder="Ví dụ: Nguyễn Khánh Huyền">
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold mb-1">Email sinh viên UEH (bắt buộc đuôi <code>@st.ueh.edu.vn</code>) *</label>
+                            <input id="authUEHEmailInput" type="email" required class="form-control" placeholder="Ví dụ: huyen.3123102@st.ueh.edu.vn">
+                            <div id="emailErrorFeedback" class="text-danger small mt-1 d-none">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i>Vui lòng nhập đúng định dạng email sinh viên có đuôi <strong>@st.ueh.edu.vn</strong>!
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold mb-1">Mật khẩu *</label>
+                            <div class="input-group">
+                                <input id="authUEHPasswordInput" type="password" required class="form-control" placeholder="Nhập mật khẩu của bạn">
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePwdView('authUEHPasswordInput')">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                            <div id="pwdErrorFeedback" class="text-danger small mt-1 d-none">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i>Vui lòng nhập mật khẩu (tối thiểu 3 ký tự)!
+                            </div>
+                        </div>
+
+                        <button id="uehAuthSubmitBtn" type="submit" class="btn btn-ueh-teal w-100 rounded-pill py-2 fw-bold shadow-sm">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i>Đăng nhập bằng @st.ueh.edu.vn
+                        </button>
+                    </form>
+                </div>
+
+                <div class="position-relative text-center my-3">
+                    <hr class="text-muted">
+                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small fw-semibold">HOẶC</span>
+                </div>
+
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge rounded-pill" style="background-color: var(--ueh-orange);">Cách 2</span>
+                        <span class="fw-bold small text-dark">Đăng nhập / Đăng ký bằng tài khoản Google</span>
+                    </div>
+                    <button type="button" onclick="openGoogleOAuthPopup()" class="btn-google-auth w-100">
+                        <svg width="20" height="20" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <span>Tiếp tục với Google (Đăng nhập / Đăng ký)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL GOOGLE OAUTH2 CHÍNH THỨC ==================== -->
+    <div class="modal fade" id="googleOAuthModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 430px;">
+            <div class="modal-content rounded-4 border shadow-lg p-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <span class="small fw-semibold text-secondary">Đăng nhập bằng Google</span>
+                    </div>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="text-center mb-3">
+                    <h5 class="fw-bold mb-1">Đăng nhập vào UniTrade UEH</h5>
+                    <p class="text-muted small mb-0">Nhập tài khoản Google của bạn để tiếp tục</p>
+                </div>
+
+                <form onsubmit="handleGoogleFormSubmit(event)">
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold mb-1">Họ và tên hiển thị *</label>
+                        <input id="googleNameInput" type="text" required class="form-control" placeholder="Ví dụ: Trần Minh Khang">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold mb-1">Email Google / Gmail *</label>
+                        <input id="googleEmailInput" type="email" required class="form-control" placeholder="Ví dụ: minhkhang.ueh@gmail.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold mb-1">Mật khẩu Google *</label>
+                        <input id="googlePasswordInput" type="password" required class="form-control" placeholder="Nhập mật khẩu Google">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">
+                        Xác nhận & Tiếp tục với Google
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST THÔNG BÁO ==================== -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+        <div id="liveToast" class="toast align-items-center text-white border-0 rounded-3 shadow-lg" style="background-color: var(--ueh-dark);" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-check fs-5" style="color: var(--ueh-orange);"></i>
+                    <span id="toastMsgContent">Thành công!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-top py-3 mt-5">
+        <div class="container-xl d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2 small text-muted">
+            <div>
+                <strong style="color: var(--ueh-teal);">UniTrade UEH © 2026</strong> — Sàn Giao Dịch Đồ Cũ Sinh Viên Đại học Kinh tế TP. Hồ Chí Minh
+            </div>
+            <div class="d-flex gap-3 fw-semibold">
+                <span>Cơ sở A (Quận 3)</span>
+                <span>•</span>
+                <span>Cơ sở B (Quận 10)</span>
+                <span>•</span>
+                <span>Cơ sở N (Nam TP)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ==================== JAVASCRIPT XỬ LÝ TOÀN BỘ CHỨC NĂNG ==================== -->
+    <script>
+        // =========================================================================
+        // 1. ĐƯỜNG DẪN ẢNH THẬT TỪ THƯ MỤC
+        // =========================================================================
+        const IMG_UEH_POLO = 'aoUeh.png';
+        const IMG_BOOK_MARKETING = 'market.png';
+        const IMG_BOOK_FINANCE = 'tctt.jpg';
+        const IMG_BOOK_ACCOUNTING = 'ktcp.jpg';
+        const IMG_SANAKY_STOVE = 'bep.jpg';
+
+        // =========================================================================
+        // 2. DỮ LIỆU ĐỊA CHỈ MẶC ĐỊNH 3 CƠ SỞ UEH
+        // =========================================================================
+        const UEH_CAMPUSES = {
+            A: {
+                code: 'A',
+                name: 'Cơ sở A UEH',
+                address: 'Cơ sở A UEH: 59C Nguyễn Đình Chiểu, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh.',
+                mapQuery: '59C Nguyen Dinh Chieu, Phuong Vo Thi Sau, Quan 3, Ho Chi Minh'
+            },
+            B: {
+                code: 'B',
+                name: 'Cơ sở B UEH',
+                address: 'Cơ sở B UEH: 279 Nguyễn Tri Phương, Phường 5, Quận 10, TP. Hồ Chí Minh.',
+                mapQuery: '279 Nguyen Tri Phuong, Phuong 5, Quan 10, Ho Chi Minh'
+            },
+            N: {
+                code: 'N',
+                name: 'Cơ sở N UEH',
+                address: 'Cơ sở N UEH: Khu chức năng số 15, Đô thị mới Nam TP, Xã Bình Hưng, Huyện Bình Chánh, TP. Hồ Chí Minh.',
+                mapQuery: 'UEH Nguyen Van Linh Khu chuc nang so 15 Binh Hung Binh Chanh Ho Chi Minh'
+            }
+        };
+
+        // =========================================================================
+        // 3. TRẠNG THÁI HỆ THỐNG & GIỚI HẠN TỐI ĐA 5 ẢNH + QUÉT MÃ VẠCH SÁCH
+        // =========================================================================
+        const MAX_UPLOAD_IMAGES = 5;
+        let uploadedImagesList = [];
+        let isBarcodeVerified = false;
+        let barcodeStream = null; // Quản lý luồng video camera
+
+        let currentUser = null;
+        let authMode = 'login';
+        let pendingTabAfterLogin = null;
+        let activeCategory = 'all';
+        let selectedCampusCode = 'B';
+        let currentModalProductId = null;
+
+        // =========================================================================
+        // 4. DANH SÁCH SẢN PHẨM "ĐỒ MỚI ĐĂNG"
+        // =========================================================================
+        let products = [
+            {
+                id: 1,
+                title: 'Áo thun Polo đồng phục UEH (Mattana Size L)',
+                category: 'Quần áo & Phụ kiện',
+                price: 95000,
+                seller: 'Trần Minh Khang',
+                campus: 'Cơ sở B',
+                postedAgo: '1 ngày trước',
+                condition: 'Mới 99%',
+                image: IMG_UEH_POLO,
+                desc: 'Áo thun Polo đồng phục UEH chính hãng Mattana size L, phối màu xanh cổ vịt - tay cam đặc trưng UEH. Áo mình mới mặc chụp ảnh kỷ yếu 1 lần, vải cực mát, không xù lông.'
+            },
+            {
+                id: 2,
+                title: 'Giáo trình Marketing Căn Bản UEH',
+                category: 'Sách & Giáo trình',
+                price: 65000,
+                seller: 'Nguyễn Khánh Huyền',
+                campus: 'Cơ sở B',
+                postedAgo: '1 ngày trước',
+                condition: 'Như mới (95%)',
+                image: IMG_BOOK_MARKETING,
+                desc: 'Giáo trình Marketing Căn Bản của Khoa Thương mại - Du lịch - Marketing UEH (Chủ biên: ThS. Đinh Tiên Minh). Sách gốc NXB Lao Động, trang sách phẳng đẹp.'
+            },
+            {
+                id: 3,
+                title: 'Giáo trình Lý Thuyết Tài Chính Tiền Tệ UEH',
+                category: 'Sách & Giáo trình',
+                price: 55000,
+                seller: 'Lê Quế Trâm',
+                campus: 'Cơ sở A',
+                postedAgo: '1 ngày trước',
+                condition: 'Cũ nhưng còn tốt',
+                image: IMG_BOOK_FINANCE,
+                desc: 'Sách Lý Thuyết Tài Chính Tiền Tệ (GS-TS. Dương Thị Bình Minh - TS. Sử Đình Thành). Có ghi chú sẵn các câu hỏi trắc nghiệm hay ra thi cuối kỳ.'
+            },
+            {
+                id: 4,
+                title: 'Giáo trình Kế Toán Chi Phí (Cost Accounting)',
+                category: 'Sách & Giáo trình',
+                price: 70000,
+                seller: 'Phạm Tú Trang',
+                campus: 'Cơ sở A',
+                postedAgo: '2 ngày trước',
+                condition: 'Như mới (95%)',
+                image: IMG_BOOK_ACCOUNTING,
+                desc: 'Giáo trình Kế Toán Chi Phí của Khoa Kế toán - Kiểm toán UEH (TS. Đoàn Ngọc Quế chủ biên). Sách giữ gìn kỹ, tặng kèm bộ bài tập giải mẫu.'
+            },
+            {
+                id: 5,
+                title: 'Bếp hồng ngoại đôi Sanaky dùng ở phòng trọ',
+                category: 'Đồ dùng nhà bếp',
+                price: 380000,
+                seller: 'Võ Hải',
+                campus: 'Cơ sở N',
+                postedAgo: '1 ngày trước',
+                condition: 'Cũ nhưng còn tốt',
+                image: IMG_SANAKY_STOVE,
+                desc: 'Bếp hồng ngoại đôi mặt kính chịu nhiệt Sanaky không kén nồi, nấu lẩu hoặc nấu ăn ở trọ cực nhanh. Mình chuyển về KTX nên pass lại giá hạt dẻ cho bạn nào cần.'
+            },
+            {
+                id: 6,
+                title: 'Tập tài liệu A4 tóm tắt Kinh tế Vi mô & Vĩ mô',
+                category: 'Tài liệu A4',
+                price: 35000,
+                seller: 'Đỗ Tuệ Chân',
+                campus: 'Cơ sở B',
+                postedAgo: '1 ngày trước',
+                condition: 'Mới 100%',
+                image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=500&auto=format&fit=crop&q=80',
+                desc: 'Trọn bộ tài liệu in giấy A4 gồm sơ đồ tư duy, công thức tính nhanh và 10 đề luyện thi trắc nghiệm Kinh tế Vi mô - Vĩ mô UEH.'
+            },
+            {
+                id: 7,
+                title: 'Nồi cơm điện mini 1.2L cho sinh viên ở trọ',
+                category: 'Đồ dùng nhà bếp',
+                price: 250000,
+                seller: 'Bùi Hoài Thương',
+                campus: 'Cơ sở N',
+                postedAgo: '2 ngày trước',
+                condition: 'Như mới (95%)',
+                image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=500&auto=format&fit=crop&q=80',
+                desc: 'Nồi cơm điện mini nhỏ gọn nấu vừa 1-2 người ăn, lòng nồi chống dính còn sáng bóng, kèm muỗng xới cơm và xửng hấp.'
+            },
+            {
+                id: 8,
+                title: 'Đèn bàn học chống cận 3 chế độ ánh sáng',
+                category: 'Đồ dùng phòng ngủ',
+                price: 120000,
+                seller: 'Hoàng Quốc Chính',
+                campus: 'Cơ sở B',
+                postedAgo: '1 ngày trước',
+                condition: 'Như mới (95%)',
+                image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&auto=format&fit=crop&q=80',
+                desc: 'Đèn bàn học LED chống cận thị cho sinh viên cày deadline đêm, thân đèn uốn dẻo 360 độ.'
+            },
+            {
+                id: 9,
+                title: 'Balo chống sốc đựng vừa Laptop 15.6 inch',
+                category: 'Quần áo & Phụ kiện',
+                price: 190000,
+                seller: 'Nguyễn Quang Minh',
+                campus: 'Cơ sở A',
+                postedAgo: '2 ngày trước',
+                condition: 'Như mới (95%)',
+                image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=80',
+                desc: 'Balo vải trượt nước nhiều ngăn, đệm lưng êm ái khi di chuyển giữa Cơ sở A, B và N.'
+            },
+            {
+                id: 10,
+                title: 'Bộ chăn ga gối cotton thoáng mát phòng trọ',
+                category: 'Đồ dùng phòng ngủ',
+                price: 210000,
+                seller: 'Lê Mai Nguyên',
+                campus: 'Cơ sở N',
+                postedAgo: '2 ngày trước',
+                condition: 'Mới 100%',
+                image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&auto=format&fit=crop&q=80',
+                desc: 'Bộ ga giường 1m6 + 2 vỏ gối nằm + chăn mỏng trần bông mới nguyên trong túi, vừa giường KTX và phòng trọ.'
+            }
+        ];
+
+        let cart = [
+            { id: 1, title: 'Áo thun Polo đồng phục UEH (Mattana Size L)', seller: 'Trần Minh Khang', price: 95000, qty: 1, image: IMG_UEH_POLO },
+            { id: 2, title: 'Giáo trình Marketing Căn Bản UEH', seller: 'Nguyễn Khánh Huyền', price: 65000, qty: 1, image: IMG_BOOK_MARKETING }
+        ];
+
+        let shippingOrders = [
+            {
+                orderNo: 'UEH-884920',
+                title: 'Áo thun Polo đồng phục UEH (Mattana Size L)',
+                seller: 'Trần Minh Khang',
+                price: 95000,
+                shipper: 'Nguyễn Văn Hùng',
+                eta: '12 phút nữa tới sảnh',
+                image: IMG_UEH_POLO
+            },
+            {
+                orderNo: 'UEH-884925',
+                title: 'Bếp hồng ngoại đôi Sanaky dùng ở phòng trọ',
+                seller: 'Võ Hải',
+                price: 380000,
+                shipper: 'Lê Thành Đạt',
+                eta: '20 phút nữa tới sảnh',
+                image: IMG_SANAKY_STOVE
+            }
+        ];
+
+        let mySellingItems = [
+            { id: 501, title: 'Áo thun Polo đồng phục UEH (Mattana Size L)', category: 'Quần áo & Phụ kiện', price: 95000, campus: 'Cơ sở B', condition: 'Mới 99%', image: IMG_UEH_POLO },
+            { id: 502, title: 'Giáo trình Marketing Căn Bản UEH', category: 'Sách & Giáo trình', price: 65000, campus: 'Cơ sở B', condition: 'Như mới (95%)', image: IMG_BOOK_MARKETING }
+        ];
+
+        let mySoldItems = [
+            { id: 601, title: 'Giáo trình Kinh tế Vi mô UEH', price: 75000, buyer: 'Đặng Thanh Toàn', campus: 'Cơ sở B' },
+            { id: 602, title: 'Máy tính bỏ túi Casio fx-580VN X', price: 320000, buyer: 'Phạm Tú Trang', campus: 'Cơ sở N' }
+        ];
+
+        let conversations = [
+            {
+                id: 1,
+                name: 'Trần Minh Khang',
+                item: 'Áo thun Polo đồng phục UEH (95.000đ)',
+                avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80',
+                messages: [
+                    { from: 'them', text: 'Chào bạn! Áo Polo đồng phục UEH size L mình vẫn còn nha, áo mới tinh như ảnh luôn ạ.' },
+                    { from: 'me', text: 'Dạ mình học ở Cơ sở B Nguyễn Tri Phương, trưa nay bạn đem qua sảnh B giúp mình được không?' },
+                    { from: 'them', text: 'Oke bạn nha! Đúng 11h30 hết ca sáng mình mang xuống sảnh B gửi bạn nhé.' }
+                ]
+            },
+            {
+                id: 2,
+                name: 'Nguyễn Khánh Huyền',
+                item: 'Giáo trình Marketing Căn Bản UEH (65.000đ)',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+                messages: [
+                    { from: 'them', text: 'Sách Marketing Căn Bản mình có kẹp thêm bộ đề ôn tập trắc nghiệm cho bạn luôn nha.' }
+                ]
+            },
+            {
+                id: 3,
+                name: 'Võ Hải',
+                item: 'Bếp hồng ngoại đôi Sanaky (380.000đ)',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80',
+                messages: [
+                    { from: 'them', text: 'Bếp hồng ngoại đôi Sanaky cả 2 mâm nhiệt đều nóng rất nhanh, bạn kiểm tra thoải mái ở sảnh Cơ sở N nha.' }
+                ]
+            }
+        ];
+        let activeConvId = 1;
+
+        function formatVND(num) {
+            return Number(num) === 0 ? '0đ (Tặng miễn phí)' : Number(num).toLocaleString('vi-VN') + 'đ';
+        }
+
+        // =========================================================================
+        // 5. KIỂM TRA BẮT BUỘC ĐĂNG NHẬP & XỬ LÝ 2 PHƯƠNG THỨC ĐĂNG NHẬP
+        // =========================================================================
+        function requireAuthentication(targetTab = null) {
+            if (currentUser) return true;
+            pendingTabAfterLogin = targetTab;
+            openAuthModal('login');
+            showToast('Vui lòng đăng nhập tài khoản (@st.ueh.edu.vn hoặc Google) để sử dụng tính năng này!');
+            return false;
+        }
+
+        function switchTab(tabName) {
+            if (tabName !== 'home' && !requireAuthentication(tabName)) {
+                return;
+            }
+
+            document.querySelectorAll('.tab-pane-section').forEach(el => el.classList.add('d-none'));
+            document.getElementById('tab-' + tabName).classList.remove('d-none');
+
+            document.querySelectorAll('.ueh-nav-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('nav-' + tabName);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAuthModal(mode = 'login') {
+            switchAuthMode(mode);
+            const modalEl = document.getElementById('authModal');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+
+        function switchAuthMode(mode) {
+            authMode = mode;
+            const btnLogin = document.getElementById('tabBtnLogin');
+            const btnReg = document.getElementById('tabBtnRegister');
+            const regNameGroup = document.getElementById('regFullNameGroup');
+            const titleEl = document.getElementById('authModalTitle');
+            const submitBtn = document.getElementById('uehAuthSubmitBtn');
+
+            document.getElementById('emailErrorFeedback').classList.add('d-none');
+            document.getElementById('pwdErrorFeedback').classList.add('d-none');
+
+            if (mode === 'register') {
+                btnReg.classList.add('active');
+                btnReg.classList.remove('text-secondary');
+                btnLogin.classList.remove('active');
+                btnLogin.classList.add('text-secondary');
+                regNameGroup.classList.remove('d-none');
+                titleEl.textContent = 'Đăng ký tài khoản UniTrade UEH';
+                submitBtn.innerHTML = '<i class="fa-solid fa-user-plus me-1"></i>Đăng ký bằng @st.ueh.edu.vn';
+            } else {
+                btnLogin.classList.add('active');
+                btnLogin.classList.remove('text-secondary');
+                btnReg.classList.remove('active');
+                btnReg.classList.add('text-secondary');
+                regNameGroup.classList.add('d-none');
+                titleEl.textContent = 'Đăng nhập vào UniTrade UEH';
+                submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket me-1"></i>Đăng nhập bằng @st.ueh.edu.vn';
+            }
+        }
+
+        function togglePwdView(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function handleUEHEmailAuth(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('authUEHEmailInput');
+            const pwdInput = document.getElementById('authUEHPasswordInput');
+            const nameInput = document.getElementById('authFullNameInput');
+
+            const emailVal = emailInput.value.trim().toLowerCase();
+            const pwdVal = pwdInput.value.trim();
+
+            const emailErr = document.getElementById('emailErrorFeedback');
+            const pwdErr = document.getElementById('pwdErrorFeedback');
+
+            emailErr.classList.add('d-none');
+            pwdErr.classList.add('d-none');
+
+            if (!emailVal || !emailVal.endsWith('@st.ueh.edu.vn') || emailVal.length <= '@st.ueh.edu.vn'.length) {
+                emailErr.classList.remove('d-none');
+                emailInput.focus();
+                return;
+            }
+
+            if (!pwdVal || pwdVal.length < 3) {
+                pwdErr.classList.remove('d-none');
+                pwdInput.focus();
+                return;
+            }
+
+            let displayName = nameInput.value.trim();
+            if (!displayName) {
+                const prefix = emailVal.split('@')[0].replace(/[0-9._-]/g, ' ').trim();
+                displayName = prefix ? ('SV UEH (' + prefix + ')') : 'Nguyễn Khánh Huyền';
+            }
+
+            completeLoginSession({
+                name: displayName,
+                email: emailVal,
+                method: 'Sinh viên UEH (@st.ueh.edu.vn)',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80'
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+        }
+
+        function openGoogleOAuthPopup() {
+            const authModalInstance = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+            if (authModalInstance) authModalInstance.hide();
+
+            const googleModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('googleOAuthModal'));
+            googleModal.show();
+        }
+
+        function handleGoogleFormSubmit(event) {
+            event.preventDefault();
+            const gName = document.getElementById('googleNameInput').value.trim();
+            const gEmail = document.getElementById('googleEmailInput').value.trim();
+            const gPwd = document.getElementById('googlePasswordInput').value.trim();
+
+            if (!gName || !gEmail || !gPwd) return;
+
+            completeLoginSession({
+                name: gName,
+                email: gEmail,
+                method: 'Tài khoản Google',
+                avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80'
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById('googleOAuthModal')).hide();
+        }
+
+        function completeLoginSession(userObj) {
+            currentUser = userObj;
+
+            document.getElementById('guestAuthArea').classList.add('d-none');
+            const loggedArea = document.getElementById('userLoggedArea');
+            loggedArea.classList.remove('d-none');
+            loggedArea.classList.add('d-flex');
+
+            document.getElementById('headerUserAvatar').src = userObj.avatar;
+            document.getElementById('headerUserName').textContent = userObj.name;
+            document.getElementById('headerUserMethod').textContent = userObj.email;
+
+            document.getElementById('topStatusBadge').innerHTML = `<i class="fa-solid fa-circle-check text-warning me-1"></i>Xin chào, ${userObj.name}`;
+
+            document.getElementById('accProfileAvatar').src = userObj.avatar;
+            document.getElementById('accProfileName').textContent = userObj.name;
+            document.getElementById('accProfileEmail').textContent = userObj.email;
+            document.getElementById('inputProfName').value = userObj.name;
+            document.getElementById('inputProfEmail').value = userObj.email;
+
+            renderCart();
+            showToast(`Đăng nhập thành công! Chào mừng ${userObj.name} đến với UniTrade UEH.`);
+
+            if (pendingTabAfterLogin) {
+                const target = pendingTabAfterLogin;
+                pendingTabAfterLogin = null;
+                switchTab(target);
+            }
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            document.getElementById('guestAuthArea').classList.remove('d-none');
+            const loggedArea = document.getElementById('userLoggedArea');
+            loggedArea.classList.add('d-none');
+            loggedArea.classList.remove('d-flex');
+
+            document.getElementById('topStatusBadge').innerHTML = `<i class="fa-solid fa-lock text-warning me-1"></i>Chưa đăng nhập`;
+            document.getElementById('cartBadge').textContent = '0';
+
+            switchTab('home');
+            showToast('Đã đăng xuất tài khoản. Giao diện đã quay về trạng thái Trước khi đăng nhập.');
+        }
+
+        // =========================================================================
+        // 6. HIỂN THỊ SẢN PHẨM TRANG CHỦ & BỘ LỌC DANH MỤC
+        // =========================================================================
+        function filterByCategory(catName) {
+            if (activeCategory === catName) {
+                activeCategory = 'all';
+            } else {
+                activeCategory = catName;
+            }
+
+            document.querySelectorAll('.category-item-card').forEach(el => el.classList.remove('active'));
+            const resetBtn = document.getElementById('resetCatBtn');
+
+            if (activeCategory !== 'all') {
+                const activeEl = document.getElementById('cat-' + activeCategory);
+                if (activeEl) activeEl.classList.add('active');
+                resetBtn.classList.remove('d-none');
+            } else {
+                resetBtn.classList.add('d-none');
+            }
+
+            renderHomeProducts();
+        }
+
+        function renderHomeProducts() {
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            const campusVal = document.getElementById('campusFilterSelect').value;
+            const grid = document.getElementById('homeProductsGrid');
+
+            const filtered = products.filter(p => {
+                const matchCat = activeCategory === 'all' || p.category === activeCategory;
+                const matchCampus = campusVal === 'all' || p.campus === campusVal;
+                const matchKey = !keyword || p.title.toLowerCase().includes(keyword) || p.category.toLowerCase().includes(keyword) || p.seller.toLowerCase().includes(keyword);
+                return matchCat && matchCampus && matchKey;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12">
+                        <div class="bg-white rounded-4 p-5 text-center border">
+                            <i class="fa-solid fa-box-open fs-1 text-secondary mb-2"></i>
+                            <h6 class="fw-bold">Không tìm thấy sản phẩm nào phù hợp</h6>
+                            <button onclick="filterByCategory('all')" class="btn btn-sm btn-ueh-teal mt-2">Xem lại tất cả đồ mới đăng</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="col">
+                    <div class="product-card">
+                        <div>
+                            <div class="product-img-wrap" onclick="openProductDetail(${item.id})">
+                                <img src="${item.image}" alt="${item.title}">
+                                <span class="badge bg-dark bg-opacity-75 position-absolute top-0 start-0 m-2" style="font-size: 0.68rem;">
+                                    ${item.postedAgo}
+                                </span>
+                                <span class="badge position-absolute top-0 end-0 m-2" style="background-color: var(--ueh-teal); font-size: 0.68rem;">
+                                    ${item.campus}
+                                </span>
+                            </div>
+                            <div class="p-3">
+                                <div class="text-muted mb-1" style="font-size: 0.72rem;">${item.category}</div>
+                                <h6 onclick="openProductDetail(${item.id})" class="fw-bold text-dark text-truncate mb-1" style="font-size: 0.9rem; cursor: pointer;" title="${item.title}">
+                                    ${item.title}
+                                </h6>
+                                <div class="fw-bolder fs-6 mb-2" style="color: var(--ueh-orange);">
+                                    ${formatVND(item.price)}
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between pt-2 border-top text-muted" style="font-size: 0.74rem;">
+                                    <span class="text-truncate" title="Người bán: ${item.seller}">
+                                        <i class="fa-solid fa-user-graduate me-1" style="color: var(--ueh-teal);"></i>${item.seller}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-3 pb-3 d-flex gap-1">
+                            <button onclick="addProductToCart(${item.id})" class="btn btn-sm btn-ueh-teal flex-grow-1 rounded-3" style="font-size: 0.78rem;">
+                                <i class="fa-solid fa-cart-plus me-1"></i>Thêm giỏ hàng
+                            </button>
+                            <button onclick="openProductDetail(${item.id})" class="btn btn-sm btn-light border rounded-3" title="Xem chi tiết">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openProductDetail(prodId) {
+            const item = products.find(p => p.id === prodId);
+            if (!item) return;
+            currentModalProductId = item.id;
+
+            document.getElementById('detailModalImg').src = item.image;
+            document.getElementById('detailModalTime').textContent = `${item.postedAgo} • ${item.campus}`;
+            document.getElementById('detailModalCategory').textContent = item.category;
+            document.getElementById('detailModalTitle').textContent = item.title;
+            document.getElementById('detailModalPrice').textContent = formatVND(item.price);
+            document.getElementById('detailModalDesc').textContent = item.desc;
+            document.getElementById('detailModalSeller').textContent = item.seller + ' (Sinh viên UEH)';
+            document.getElementById('detailModalCampus').textContent = item.campus + ' UEH';
+            document.getElementById('detailModalCond').textContent = item.condition || 'Như mới';
+
+            document.getElementById('detailAddToCartBtn').onclick = function () {
+                bootstrap.Modal.getInstance(document.getElementById('productDetailModal')).hide();
+                addProductToCart(item.id);
+            };
+
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('productDetailModal'));
+            modal.show();
+        }
+
+        function chatWithSellerFromModal() {
+            bootstrap.Modal.getInstance(document.getElementById('productDetailModal')).hide();
+            switchTab('messages');
+        }
+
+        // =========================================================================
+        // 7. XỬ LÝ TỐI ĐA 5 ẢNH Ở BƯỚC 1 & QUÉT MÃ VẠCH SÁCH Ở BƯỚC 5
+        // =========================================================================
+        const SAMPLE_THUMBS = [
+            { label: 'Áo Polo UEH', src: IMG_UEH_POLO },
+            { label: 'Sách Marketing', src: IMG_BOOK_MARKETING },
+            { label: 'Sách Tài Chính', src: IMG_BOOK_FINANCE },
+            { label: 'Sách Kế Toán', src: IMG_BOOK_ACCOUNTING },
+            { label: 'Bếp Sanaky', src: IMG_SANAKY_STOVE }
+        ];
+
+        function triggerFileSelect() {
+            if (uploadedImagesList.length >= MAX_UPLOAD_IMAGES) {
+                showToast('Bạn đã đạt giới hạn tối đa 5 ảnh! Vui lòng xóa bớt nếu muốn chọn ảnh khác.');
+                return;
+            }
+            document.getElementById('realFileInput').click();
+        }
+
+        function renderSampleThumbs() {
+            const box = document.getElementById('sampleThumbList');
+            box.innerHTML = SAMPLE_THUMBS.map((t, idx) => `
+                <div class="col">
+                    <div onclick="pickSampleProductImg(${idx})" class="thumb-slot border shadow-sm" title="Thêm mẫu: ${t.label}">
+                        <img src="${t.src}" alt="${t.label}">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderUploadedFiveSlots() {
+            const slotContainer = document.getElementById('uploadedFiveSlots');
+            const count = uploadedImagesList.length;
+
+            document.getElementById('imageCountBadge').textContent = `${count}/${MAX_UPLOAD_IMAGES} ảnh (Tối đa 5)`;
+            document.getElementById('slotCounterText').textContent = count;
+
+            const clearBtn = document.getElementById('clearAllImgsBtn');
+            const previewImg = document.getElementById('mainUploadPreview');
+            const placeholder = document.getElementById('uploadPlaceholderContent');
+
+            if (count > 0) {
+                clearBtn.classList.remove('d-none');
+                previewImg.src = uploadedImagesList[count - 1];
+                previewImg.classList.remove('d-none');
+                placeholder.classList.add('d-none');
+            } else {
+                clearBtn.classList.add('d-none');
+                previewImg.classList.add('d-none');
+                placeholder.classList.remove('d-none');
+            }
+
+            let html = '';
+            for (let i = 0; i < MAX_UPLOAD_IMAGES; i++) {
+                if (i < count) {
+                    html += `
+                        <div class="col">
+                            <div class="thumb-slot border border-2 position-relative" style="border-color: var(--ueh-teal) !important;">
+                                <img src="${uploadedImagesList[i]}" onclick="setMainPreviewByIndex(${i})" alt="Ảnh ${i + 1}">
+                                <button type="button" onclick="removeSingleUploadedImg(${i})" class="btn btn-danger btn-sm p-0 position-absolute top-0 end-0 m-1 rounded-circle d-flex align-items-center justify-content-center" style="width:18px;height:18px;font-size:0.65rem;" title="Xóa ảnh này">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="col">
+                            <div onclick="triggerFileSelect()" class="thumb-slot text-muted" style="font-size: 0.72rem;" title="Ô ảnh ${i + 1}/5">
+                                <span>+${i + 1}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            slotContainer.innerHTML = html;
+        }
+
+        function setMainPreviewByIndex(idx) {
+            if (!uploadedImagesList[idx]) return;
+            document.getElementById('mainUploadPreview').src = uploadedImagesList[idx];
+        }
+
+        function removeSingleUploadedImg(idx) {
+            uploadedImagesList.splice(idx, 1);
+            renderUploadedFiveSlots();
+        }
+
+        function addImageToUploadList(dataUrl, label = '') {
+            if (uploadedImagesList.length >= MAX_UPLOAD_IMAGES) {
+                showToast('Chỉ được tải lên tối đa 5 ảnh cho mỗi sản phẩm!');
+                return false;
+            }
+            uploadedImagesList.push(dataUrl);
+            renderUploadedFiveSlots();
+            return true;
+        }
+
+        function pickSampleProductImg(index) {
+            const chosen = SAMPLE_THUMBS[index];
+            if (!chosen) return;
+            if (addImageToUploadList(chosen.src, chosen.label)) {
+                showToast(`Đã thêm "${chosen.label}" (${uploadedImagesList.length}/${MAX_UPLOAD_IMAGES} ảnh)`);
+            }
+        }
+
+        function handleRealImageUpload(event) {
+            const files = Array.from(event.target.files || []);
+            if (files.length === 0) return;
+
+            const remainingSlots = MAX_UPLOAD_IMAGES - uploadedImagesList.length;
+            if (remainingSlots <= 0) {
+                showToast('Bạn đã tải đủ tối đa 5 ảnh!');
+                event.target.value = '';
+                return;
+            }
+
+            if (files.length > remainingSlots) {
+                showToast(`Chỉ được tối đa 5 ảnh! Hệ thống sẽ chỉ lấy ${remainingSlots} ảnh đầu tiên.`);
+            }
+
+            const filesToRead = files.slice(0, remainingSlots);
+            filesToRead.forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    addImageToUploadList(e.target.result, file.name);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            event.target.value = '';
+        }
+
+        function clearUploadedImage() {
+            uploadedImagesList = [];
+            document.getElementById('realFileInput').value = '';
+            renderUploadedFiveSlots();
+        }
+
+        // -----------------------------------------------------
+        // CÁC HÀM XỬ LÝ CAMERA QUÉT MÃ VẠCH (BƯỚC 5)
+        // -----------------------------------------------------
+        function handleCategoryChange() {
+            const cat = document.getElementById('sellCategory').value;
+            const barcodeStep = document.getElementById('bookBarcodeStep');
+            const resultBox = document.getElementById('barcodeScanResultBox');
+
+            if (cat === 'Sách & Giáo trình') {
+                barcodeStep.classList.remove('d-none');
+                isBarcodeVerified = false;
+                resultBox.classList.add('d-none');
+                // Tắt camera nếu đang bật mà đổi danh mục
+                stopBarcodeCamera();
+            } else {
+                barcodeStep.classList.add('d-none');
+                isBarcodeVerified = true;
+                stopBarcodeCamera();
+            }
+        }
+
+        async function startBarcodeCamera() {
+            const video = document.getElementById('barcodeVideo');
+            const cameraContainer = document.getElementById('cameraContainer');
+            const placeholder = document.getElementById('barcodeStaticPlaceholder');
+            
+            const startBtn = document.getElementById('startCameraBtn');
+            const captureBtn = document.getElementById('captureCameraBtn');
+            const stopBtn = document.getElementById('stopCameraBtn');
+            const uploadLabel = document.getElementById('uploadBarcodeLabel');
+            
+            const resultBox = document.getElementById('barcodeScanResultBox');
+            resultBox.classList.add('d-none');
+
+            try {
+                // Ưu tiên mở camera sau trên thiết bị di động
+                barcodeStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "environment" } 
+                });
+                video.srcObject = barcodeStream;
+                
+                // Hiển thị khung video
+                placeholder.classList.add('d-none');
+                cameraContainer.classList.remove('d-none');
+                
+                // Cập nhật nút bấm
+                startBtn.classList.add('d-none');
+                uploadLabel.classList.add('d-none');
+                
+                captureBtn.classList.remove('d-none');
+                stopBtn.classList.remove('d-none');
+
+            } catch (err) {
+                console.error("Lỗi truy cập camera: ", err);
+                showToast("Không thể truy cập camera. Hãy chắc chắn bạn đang dùng HTTPS hoặc Localhost và đã cấp quyền.");
+            }
+        }
+
+        function stopBarcodeCamera() {
+            if (barcodeStream) {
+                barcodeStream.getTracks().forEach(track => track.stop());
+                barcodeStream = null;
+            }
+            
+            document.getElementById('barcodeVideo').srcObject = null;
+            document.getElementById('cameraContainer').classList.add('d-none');
+            document.getElementById('barcodeStaticPlaceholder').classList.remove('d-none');
+            
+            document.getElementById('startCameraBtn').classList.remove('d-none');
+            document.getElementById('uploadBarcodeLabel').classList.remove('d-none');
+            
+            document.getElementById('captureCameraBtn').classList.add('d-none');
+            document.getElementById('stopCameraBtn').classList.add('d-none');
+        }
+
+        function captureBarcode() {
+            const video = document.getElementById('barcodeVideo');
+            const canvas = document.getElementById('barcodeCanvas');
+            const context = canvas.getContext('2d');
+            
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Tắt camera và trả về giao diện gốc
+                stopBarcodeCamera();
+                
+                // Kích hoạt quét thành công
+                simulateBarcodeScan(true);
+            }
+        }
+
+        function handleBarcodeImageUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return; 
+
+            // Cứ chọn ảnh xong là tự động quét
+            simulateBarcodeScan(true);
+
+            event.target.value = '';
+        }
+
+        function simulateBarcodeScan(isSuccess) {
+            const laser = document.getElementById('scannerLaserLine');
+            const resultBox = document.getElementById('barcodeScanResultBox');
+
+            laser.classList.remove('d-none');
+            resultBox.classList.remove('d-none');
+            resultBox.innerHTML = `
+                <div class="p-2 rounded-3 bg-white border text-secondary fw-semibold small">
+                    <i class="fa-solid fa-spinner fa-spin me-2"></i>Đang quét và đối chiếu mã vạch sách gốc...
+                </div>
+            `;
+
+            setTimeout(() => {
+                laser.classList.add('d-none');
+                if (isSuccess) {
+                    isBarcodeVerified = true;
+                    resultBox.innerHTML = `
+                        <div class="p-2 rounded-3 bg-success-subtle border border-success text-success fw-bolder" style="font-size: 0.92rem;">
+                            <i class="fa-solid fa-circle-check me-2"></i>Mặt hàng được duyệt.
+                        </div>
+                    `;
+                    showToast('Mặt hàng được duyệt.');
+                } else {
+                    isBarcodeVerified = false;
+                    resultBox.innerHTML = `
+                        <div class="p-2 rounded-3 bg-danger-subtle border border-danger text-danger fw-bolder" style="font-size: 0.92rem;">
+                            <i class="fa-solid fa-circle-xmark me-2"></i>Vui lòng quét lại để được duyệt.
+                        </div>
+                    `;
+                    showToast('Vui lòng quét lại để được duyệt.');
+                }
+            }, 800);
+        }
+
+        // -----------------------------------------------------
+        // KẾT THÚC CÁC HÀM XỬ LÝ CAMERA
+        // -----------------------------------------------------
+
+        function selectConditionBtn(condText, btnEl) {
+            document.getElementById('sellCondition').value = condText;
+            document.querySelectorAll('.cond-option-btn').forEach(b => {
+                b.className = 'cond-option-btn btn btn-sm btn-outline-secondary w-100 fw-semibold py-2';
+                b.style = '';
+            });
+            btnEl.className = 'cond-option-btn btn btn-sm w-100 fw-bold py-2 border-2';
+            btnEl.style.backgroundColor = 'var(--ueh-light)';
+            btnEl.style.borderColor = 'var(--ueh-teal)';
+            btnEl.style.color = 'var(--ueh-teal)';
+        }
+
+        function handlePublishItem(event) {
+            event.preventDefault();
+            if (!requireAuthentication('sell')) return;
+
+            if (uploadedImagesList.length === 0) {
+                showToast('Vui lòng tải lên ít nhất 1 hình ảnh sản phẩm (Tối đa 5 ảnh) ở Bước 1!');
+                return;
+            }
+
+            const title = document.getElementById('sellTitle').value.trim();
+            const category = document.getElementById('sellCategory').value;
+            const campus = document.getElementById('sellCampus').value;
+            const desc = document.getElementById('sellDesc').value.trim();
+            const price = Number(document.getElementById('sellPrice').value);
+            const condition = document.getElementById('sellCondition').value;
+
+            // Bắt buộc kiểm tra mã vạch nếu danh mục là Giáo trình & Sách
+            if (category === 'Sách & Giáo trình' && !isBarcodeVerified) {
+                const resultBox = document.getElementById('barcodeScanResultBox');
+                resultBox.classList.remove('d-none');
+                resultBox.innerHTML = `
+                    <div class="p-2 rounded-3 bg-danger-subtle border border-danger text-danger fw-bolder" style="font-size: 0.92rem;">
+                        <i class="fa-solid fa-circle-xmark me-2"></i>Vui lòng quét lại để được duyệt.
+                    </div>
+                `;
+                document.getElementById('bookBarcodeStep').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                showToast('Vui lòng quét lại để được duyệt.');
+                return;
+            }
+
+            const sellerFullName = currentUser ? currentUser.name : 'Nguyễn Khánh Huyền';
+            const coverImage = uploadedImagesList[0] || IMG_UEH_POLO;
+
+            const newProduct = {
+                id: Date.now(),
+                title: title,
+                category: category,
+                price: price,
+                seller: sellerFullName,
+                campus: campus,
+                postedAgo: 'Vừa đăng xong',
+                condition: condition,
+                image: coverImage,
+                desc: desc
+            };
+
+            products.unshift(newProduct);
+            mySellingItems.unshift({
+                id: newProduct.id,
+                title: newProduct.title,
+                category: newProduct.category,
+                price: newProduct.price,
+                campus: newProduct.campus,
+                condition: newProduct.condition,
+                image: newProduct.image
+            });
+
+            renderHomeProducts();
+            renderAccountLists();
+
+            document.getElementById('sellForm').reset();
+            clearUploadedImage();
+            handleCategoryChange();
+
+            showToast(`Đã đăng tin pass "${title}" thành công lên Trang chủ!`);
+            switchTab('home');
+        }
+
+        function setupDragAndDropUpload() {
+            const dropzone = document.getElementById('uploadDropzone');
+            if (!dropzone) return;
+
+            ['dragenter', 'dragover'].forEach(evtName => {
+                dropzone.addEventListener(evtName, e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(evtName => {
+                dropzone.addEventListener(evtName, e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('dragover');
+                });
+            });
+
+            dropzone.addEventListener('drop', e => {
+                const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+                if (files.length === 0) return;
+
+                const remainingSlots = MAX_UPLOAD_IMAGES - uploadedImagesList.length;
+                if (remainingSlots <= 0) {
+                    showToast('Chỉ được tải lên tối đa 5 ảnh!');
+                    return;
+                }
+
+                if (files.length > remainingSlots) {
+                    showToast(`Chỉ được tối đa 5 ảnh! Hệ thống sẽ lấy ${remainingSlots} ảnh đầu tiên.`);
+                }
+
+                files.slice(0, remainingSlots).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        addImageToUploadList(ev.target.result, file.name);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        }
+
+        // =========================================================================
+        // 8. GIỎ HÀNG CỦA TÔI
+        // =========================================================================
+        function addProductToCart(prodId) {
+            if (!requireAuthentication()) return;
+
+            const prod = products.find(p => p.id === prodId);
+            if (!prod) return;
+
+            const existing = cart.find(c => c.id === prodId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    id: prod.id,
+                    title: prod.title,
+                    seller: prod.seller,
+                    price: prod.price,
+                    qty: 1,
+                    image: prod.image
+                });
+            }
+
+            renderCart();
+            showToast(`Đã thêm "${prod.title}" vào Giỏ hàng của tôi!`);
+        }
+
+        function changeCartQty(itemId, delta) {
+            const item = cart.find(c => c.id === itemId);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(c => c.id !== itemId);
+            }
+            renderCart();
+        }
+
+        function removeCartItem(itemId) {
+            cart = cart.filter(c => c.id !== itemId);
+            renderCart();
+            showToast('Đã xóa sản phẩm khỏi giỏ hàng.');
+        }
+
+        function renderCart() {
+            const tbody = document.getElementById('cartTableBody');
+            const totalQty = currentUser ? cart.reduce((s, i) => s + i.qty, 0) : 0;
+            document.getElementById('cartBadge').textContent = totalQty;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            Giỏ hàng của bạn đang trống. Hãy thêm sản phẩm từ Trang chủ nhé!
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('cartSubtotalText').textContent = '0đ';
+                document.getElementById('cartTotalText').textContent = '0đ';
+                return;
+            }
+
+            let sum = 0;
+            tbody.innerHTML = cart.map(item => {
+                const lineTotal = item.price * item.qty;
+                sum += lineTotal;
+                return `
+                    <tr>
+                        <td class="ps-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="${item.image}" class="rounded-2 border" style="width: 54px; height: 54px; object-fit: cover;" alt="${item.title}">
+                                <div>
+                                    <div class="fw-bold text-dark">${item.title}</div>
+                                    <small class="text-muted">Người bán: ${item.seller}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm border rounded-2">
+                                <button type="button" onclick="changeCartQty(${item.id}, -1)" class="btn btn-light fw-bold">-</button>
+                                <span class="btn btn-white disabled fw-bold text-dark px-3">${item.qty}</span>
+                                <button type="button" onclick="changeCartQty(${item.id}, 1)" class="btn btn-light fw-bold">+</button>
+                            </div>
+                        </td>
+                        <td class="text-end fw-semibold">${formatVND(item.price)}</td>
+                        <td class="text-end fw-bolder" style="color: var(--ueh-teal);">${formatVND(lineTotal)}</td>
+                        <td class="text-center pe-3">
+                            <button onclick="removeCartItem(${item.id})" class="btn btn-sm text-danger">
+                                <i class="fa-solid fa-trash-can me-1"></i>Xóa
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('cartSubtotalText').textContent = formatVND(sum);
+            document.getElementById('cartTotalText').textContent = formatVND(sum);
+        }
+
+        function checkoutCartItems() {
+            if (cart.length === 0) {
+                showToast('Giỏ hàng đang trống, vui lòng chọn món đồ trước khi đặt mua!');
+                return;
+            }
+
+            cart.forEach(c => {
+                shippingOrders.unshift({
+                    orderNo: 'UEH-' + Math.floor(100000 + Math.random() * 900000),
+                    title: `${c.title} (x${c.qty})`,
+                    seller: c.seller,
+                    price: c.price * c.qty,
+                    shipper: 'Trần Quốc Bảo',
+                    eta: '15 phút nữa tới sảnh',
+                    image: c.image
+                });
+            });
+
+            cart = [];
+            renderCart();
+            renderShippingOrders();
+            switchTab('orders');
+            switchOrderTab('shipping');
+            showToast(`Đặt mua thành công! Đơn hàng đang được giao tới ${UEH_CAMPUSES[selectedCampusCode].address}`);
+        }
+
+        // =========================================================================
+        // 9. TIN NHẮN & ĐƠN HÀNG (GOOGLE MAPS 3 CƠ SỞ UEH)
+        // =========================================================================
+        function renderConversations() {
+            const listEl = document.getElementById('conversationListBox');
+            listEl.innerHTML = conversations.map(c => `
+                <button type="button" onclick="selectConversation(${c.id})" class="list-group-item list-group-item-action p-3 border-0 border-bottom ${c.id === activeConvId ? 'bg-info bg-opacity-10 border-start border-4' : ''}" style="${c.id === activeConvId ? 'border-left-color: var(--ueh-teal) !important;' : ''}">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="${c.avatar}" class="rounded-circle border" style="width: 42px; height: 42px; object-fit: cover;" alt="${c.name}">
+                        <div class="overflow-hidden flex-grow-1">
+                            <div class="fw-bold text-dark text-truncate" style="font-size: 0.86rem;">${c.name}</div>
+                            <div class="text-truncate fw-semibold" style="font-size: 0.74rem; color: var(--ueh-orange);">${c.item}</div>
+                            <div class="text-muted text-truncate" style="font-size: 0.74rem;">${c.messages[c.messages.length - 1].text}</div>
+                        </div>
+                    </div>
+                </button>
+            `).join('');
+
+            const activeConv = conversations.find(c => c.id === activeConvId);
+            if (!activeConv) return;
+
+            document.getElementById('chatHeaderAvatar').src = activeConv.avatar;
+            document.getElementById('chatHeaderName').textContent = activeConv.name;
+            document.getElementById('chatHeaderItem').textContent = 'Đang trao đổi: ' + activeConv.item;
+
+            const msgBox = document.getElementById('chatMessagesBox');
+            msgBox.innerHTML = activeConv.messages.map(m => `
+                <div class="d-flex mb-2 ${m.from === 'me' ? 'justify-content-end' : 'justify-content-start'}">
+                    <div class="px-3 py-2 rounded-4 shadow-sm" style="max-width: 78%; font-size: 0.85rem; ${m.from === 'me' ? 'background-color: var(--ueh-teal); color: #fff;' : 'background-color: #fff; border: 1px solid #E2E8F0; color: #1E293B;'}">
+                        ${m.text}
+                    </div>
+                </div>
+            `).join('');
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
+
+        function selectConversation(id) {
+            activeConvId = id;
+            renderConversations();
+        }
+
+        function handleSendChat(event) {
+            event.preventDefault();
+            const input = document.getElementById('chatTextInput');
+            const text = input.value.trim();
+            if (!text) return;
+            sendQuickMessage(text);
+            input.value = '';
+        }
+
+        function sendQuickMessage(text) {
+            const conv = conversations.find(c => c.id === activeConvId);
+            if (!conv) return;
+            conv.messages.push({ from: 'me', text: text });
+            renderConversations();
+
+            setTimeout(() => {
+                conv.messages.push({
+                    from: 'them',
+                    text: 'Dạ mình nhận được tin nhắn rồi nha, hẹn gặp bạn tại sảnh cơ sở UEH nhé!'
+                });
+                renderConversations();
+            }, 600);
+        }
+
+        function switchOrderTab(subTab) {
+            document.querySelectorAll('.order-panel').forEach(p => p.classList.add('d-none'));
+            document.getElementById('order-panel-' + subTab).classList.remove('d-none');
+
+            ['pending', 'shipping', 'completed', 'review'].forEach(t => {
+                const btn = document.getElementById('order-tab-' + t);
+                if (t === subTab) {
+                    btn.className = 'btn btn-ueh-teal w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2';
+                } else {
+                    btn.className = 'btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2';
+                }
+            });
+        }
+
+        function changeDefaultCampus(code) {
+            selectOrderCampusMap(code);
+            showToast('Đã chọn địa điểm nhận hàng: ' + UEH_CAMPUSES[code].address);
+        }
+
+        function selectOrderCampusMap(code) {
+            selectedCampusCode = code;
+            const campus = UEH_CAMPUSES[code];
+            if (!campus) return;
+
+            ['A', 'B', 'N'].forEach(c => {
+                const card = document.getElementById('campus-card-' + c);
+                if (c === code) {
+                    card.className = 'p-2 rounded-3 bg-white border border-2 h-100 shadow-sm';
+                    card.style.borderColor = 'var(--ueh-teal)';
+                } else {
+                    card.className = 'p-2 rounded-3 bg-white border h-100';
+                    card.style.borderColor = '#dee2e6';
+                }
+            });
+
+            document.getElementById('mapActiveAddressLabel').textContent = campus.address;
+            document.getElementById('orderGoogleMapFrame').src = `https://maps.google.com/maps?q=${encodeURIComponent(campus.mapQuery)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+            document.getElementById('cartCampusSelect').value = code;
+            renderShippingOrders();
+        }
+
+        function renderShippingOrders() {
+            const container = document.getElementById('shippingOrdersContainer');
+            const campus = UEH_CAMPUSES[selectedCampusCode];
+
+            document.getElementById('shippingCountBadge').textContent = shippingOrders.length;
+            document.getElementById('orderBadge').textContent = shippingOrders.length;
+
+            container.innerHTML = shippingOrders.map(ord => `
+                <div class="p-3 rounded-3 border bg-white shadow-sm">
+                    <div class="d-flex gap-3 align-items-center mb-2">
+                        <img src="${ord.image}" class="rounded-2 border" style="width: 58px; height: 58px; object-fit: cover;" alt="${ord.title}">
+                        <div class="overflow-hidden flex-grow-1">
+                            <div class="fw-bold text-dark text-truncate" style="font-size: 0.88rem;">${ord.title}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">Người bán: ${ord.seller} • Mã đơn: ${ord.orderNo}</div>
+                            <div class="fw-bolder" style="color: var(--ueh-orange); font-size: 0.88rem;">${formatVND(ord.price)}</div>
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-2 bg-light border small" style="font-size: 0.75rem;">
+                        <div><strong>Người giao:</strong> ${ord.shipper} (${ord.eta})</div>
+                        <div class="text-muted mt-1"><strong>Điểm nhận:</strong> ${campus.address}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // =========================================================================
+        // 10. QUẢN LÝ TÀI KHOẢN CỦA TÔI
+        // =========================================================================
+        function switchAccountPanel(panelName) {
+            document.querySelectorAll('.acc-panel').forEach(p => p.classList.add('d-none'));
+            document.getElementById('acc-panel-' + panelName).classList.remove('d-none');
+
+            ['profile', 'selling', 'sold', 'history', 'settings'].forEach(name => {
+                const btn = document.getElementById('acc-nav-' + name);
+                if (name === panelName) {
+                    btn.className = 'btn btn-ueh-teal text-start fw-bold py-2 px-3 rounded-3 d-flex justify-content-between align-items-center';
+                } else {
+                    btn.className = 'btn btn-light text-start fw-semibold py-2 px-3 rounded-3 d-flex justify-content-between align-items-center';
+                }
+            });
+        }
+
+        function renderAccountLists() {
+            document.getElementById('accSellingBadge').textContent = mySellingItems.length;
+            document.getElementById('accSoldBadge').textContent = mySoldItems.length;
+
+            const sellingBox = document.getElementById('mySellingContainer');
+            sellingBox.innerHTML = mySellingItems.map(item => `
+                <div class="p-3 rounded-3 border d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="${item.image}" class="rounded-2 border" style="width: 56px; height: 56px; object-fit: cover;" alt="${item.title}">
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size: 0.9rem;">${item.title}</div>
+                            <div class="text-muted" style="font-size: 0.76rem;">${item.category} • ${item.campus} • ${item.condition}</div>
+                            <div class="fw-bolder" style="color: var(--ueh-orange);">${formatVND(item.price)}</div>
+                        </div>
+                    </div>
+                    <button onclick="markItemSold(${item.id})" class="btn btn-sm btn-success fw-bold">
+                        <i class="fa-solid fa-check me-1"></i>Đánh dấu Đã bán
+                    </button>
+                </div>
+            `).join('');
+
+            const soldBox = document.getElementById('mySoldContainer');
+            soldBox.innerHTML = mySoldItems.map(item => `
+                <div class="p-3 rounded-3 border bg-light d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="badge bg-success mb-1">Đã bán hoàn tất</span>
+                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">${item.title}</div>
+                        <small class="text-muted">Người mua: ${item.buyer} • Giao tại: ${item.campus}</small>
+                    </div>
+                    <div class="fw-bolder text-success">+${formatVND(item.price)}</div>
+                </div>
+            `).join('');
+        }
+
+        function markItemSold(itemId) {
+            const idx = mySellingItems.findIndex(i => i.id === itemId);
+            if (idx === -1) return;
+            const sold = mySellingItems.splice(idx, 1)[0];
+            mySoldItems.unshift({
+                id: sold.id,
+                title: sold.title,
+                price: sold.price,
+                buyer: 'Sinh viên UEH',
+                campus: sold.campus
+            });
+            renderAccountLists();
+            showToast(`Đã chuyển "${sold.title}" sang mục Hàng đã bán!`);
+        }
+
+        function saveProfileInfo(event) {
+            event.preventDefault();
+            const newName = document.getElementById('inputProfName').value.trim();
+            if (currentUser && newName) {
+                currentUser.name = newName;
+                document.getElementById('headerUserName').textContent = newName;
+                document.getElementById('accProfileName').textContent = newName;
+            }
+            showToast('Đã lưu cập nhật Hồ sơ sinh viên thành công!');
+        }
+
+        function showToast(msg) {
+            document.getElementById('toastMsgContent').textContent = msg;
+            const toastEl = document.getElementById('liveToast');
+            const toast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3200 });
+            toast.show();
+        }
+
+        // Khởi tạo ứng dụng khi mở trang
+        window.onload = function () {
+            document.getElementById('pendingOrderSampleImg').src = IMG_BOOK_MARKETING;
+            document.getElementById('completedOrderSampleImg').src = IMG_BOOK_FINANCE;
+
+            renderHomeProducts();
+            renderSampleThumbs();
+            renderUploadedFiveSlots();
+            handleCategoryChange();
+            setupDragAndDropUpload();
+            renderCart();
+            renderConversations();
+            renderShippingOrders();
+            renderAccountLists();
+        };
+    </script>
+</body>
+</html>
